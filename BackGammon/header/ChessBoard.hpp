@@ -44,6 +44,11 @@ public:
    void Display();
 
    /*!
+    *@brief   Display the _chessBoard matrix with symbols.
+    */
+   void Display2();
+   
+   /*!
     *@brief   Set the _chessBoard matrix to Zero.
     */
    void CleanChessBoard();
@@ -72,7 +77,7 @@ public:
    int IsWin();
 
    /*!
-    *@brief   Whether the continue five position is played by the same User?
+    *@brief   Whether the "lengthToCompare" positions are played by the same User?
     *
     *@param    beginX    The begin x Index.
     *@param    beginY    The begin y Index.

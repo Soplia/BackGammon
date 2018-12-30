@@ -25,7 +25,7 @@ int main(void)
    myPos.SetXY(1, 2);
    myPos.Display();
    
-   myPos.SetPlayer(3);
+   myPos.SetPlayer(2);
    myPos.Display();
    
    myPos.SetScore(4);
@@ -35,14 +35,16 @@ int main(void)
    //C.Display();
    
    
+   cout << endl << endl;
    
-   for (int i = 8; i > 3; i--)
-      C.Play(i, i, ATTACKER);
-   C.Display();
+   for (int i = 5; i <=7; i++)
+      C.Play(5, i, ATTACKER);
+   C.Display2();
    if (C.IsWin())
       cout << "win" << endl;
    else
       cout << "false" << endl;
+   
    
    return 0;
 }

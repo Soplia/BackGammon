@@ -21,12 +21,22 @@
 const int SIZE = 16;
 
 /*!
- *@brief   Represent the Computer.
+ *@brief   Represent the Offset (5-1).
+ */
+const int OFFSET = 4;
+
+/*!
+ *@brief   Represent the empty Position. "□"
+ */
+const int EMPTY = 0;
+
+/*!
+ *@brief   Represent the Computer. "⊕"
  */
 const int ATTACKER = 1;
 
 /*!
- *@brief   Represent the User.
+ *@brief   Represent the User. "⊙"
  */
 const int DEFENDER = 2;
 
