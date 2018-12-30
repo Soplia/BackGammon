@@ -1,7 +1,7 @@
 /*!
  @header Bench.cpp
  
- @abstract Github: https://github.com/Soplia
+ @abstract Github: https://github.com/Soplia/BackGammon
  
  @author Created by Jiarui XIE on 2018/12/30
  

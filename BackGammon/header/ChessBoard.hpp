@@ -1,7 +1,7 @@
 /*!
  @header ChessBoard.hpp
  
- @abstract Github: https://github.com/Soplia
+ @abstract Github: https://github.com/Soplia/BackGammon
  
  @author Created by Jiarui XIE on 2018/12/30
  
@@ -20,22 +20,97 @@
 #include <iostream>
 using namespace std;
 
+/*!
+ *@class ChessBoard
+ */
 class ChessBoard
 {
 public:
+   /*!
+    *@brief A constructor, init the _chessBoard matriz to Zero.
+    */
    ChessBoard();
+
+   /*!
+    *@brief   Init the _chessBoard matrix to x.
+    *
+    *@param    x    The value to be Assigned.
+    */
    void Init(int x);
+
+   /*!
+    *@brief   Display the _chessBoard Matrix.
+    */
    void Display();
+
+   /*!
+    *@brief   Set the _chessBoard matrix to Zero.
+    */
    void CleanChessBoard();
+
+   /*!
+    *@brief   Whether the _chessBoard matrix is full or Not.
+    *
+    *@return   true: full false: not Full
+    */
    bool IsFull();
+
+   /*!
+    *@brief   Play the chess point into the ChessBoard.
+    *
+    *@param    x    The x index of the _chessBoard Matrix.
+    *@param    y    The y index of the _chessBoard Matrix.
+    *@param    who  ATTACKER / DEFENDER
+    */
    void Play(int x, int y, int who);
+
+   /*!
+    *@brief   Whether win or Not
+    *
+    *@return   true: yes, someone win / false: no, nobady Win.
+    */
    int IsWin();
-   bool IsSame(int beginX, int beginY, int tyep, int lengthToCompare);
+
+   /*!
+    *@brief   Whether the continue five position is played by the same User?
+    *
+    *@param    beginX    The begin x Index.
+    *@param    beginY    The begin y Index.
+    *@param    type    Represent the Direction.
+    *@param    lengthToCompare    The continue Length.
+    *
+    *@return   true: yes, those are same / no, those are not Same.
+    */
+   bool IsSame(int beginX, int beginY, int type, int lengthToCompare);
+   
+   /*!
+    *@brief   Evaluate the ChessBoard then give a Mark.
+    *
+    *@return   The mark this evaluation Got.
+    */
    int EvaluateChessBoard();
+   
+   /*!
+    *@brief   Get the best Position.
+    *
+    *@return   The best Position.
+    */
    Position GetBestPosition();
 public:
+   /*!
+    *@brief   Matrix contain the whole ChessBoard
+    */
    int _chessBoard[SIZE][SIZE];
+
+   /*!
+    *@brief   Keep the latest Step
+    */
    Position _latestPosition;
+   
+   /*!
+    *@brief   Keep the global Mark
+    */
    int _globalScore;
 };
+
 

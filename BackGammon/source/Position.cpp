@@ -10,6 +10,9 @@
 #include "Position.hpp"
 #define _DEBUG
 
+/*!
+ *@brief   A Constructor.
+ */
 Position::Position()
 {
    _x = 0;
@@ -18,11 +21,20 @@ Position::Position()
    _player = 0;
 }
 
+/*!
+ *@brief   A Constructor.
+ *
+ *@param    x    The x Index.
+ *@param    y    The y Index.
+ */
 Position::Position(int x, int y)
 {
    SetXY(x, y);
 }
 
+/*!
+ *@brief   Display the contents of Positin.
+ */
 void Position::Display()
 {
 #ifdef  _DEBUG
@@ -31,6 +43,12 @@ void Position::Display()
    cout << "_x = " << _x << "; _y = " << _y << \
    "; _socre " << _score << "; _player = " << _player << endl;
 }
+
+/*!
+ *@brief   Set _player
+ *
+ *@param    x    The target player Type.
+ */
 void Position::SetPlayer(int x)
 {
 #ifdef  _DEBUG
@@ -39,6 +57,12 @@ void Position::SetPlayer(int x)
    _player = x;
 }
 
+/*!
+ *@brief   Set _x and _y.
+ *
+ *@param    x    The target x.
+ *@param    y    The target y.
+ */
 void Position::SetXY(int x, int y)
 {
 #ifdef  _DEBUG
@@ -47,6 +71,12 @@ void Position::SetXY(int x, int y)
    _x = x;
    _y = y;
 }
+
+/*!
+ *@brief   Set _score
+ *
+ *@param    x    The target Score.
+ */
 void Position::SetScore(int x)
 {
 #ifdef  _DEBUG
