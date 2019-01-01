@@ -84,6 +84,7 @@ public:
     *@brief   Represent who played on this Position.
     */
    int _player;
+   
 };
 
 

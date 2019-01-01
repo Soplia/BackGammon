@@ -18,6 +18,7 @@
 #include "Position.hpp"
 #include "ConstantFile.h"
 #include <iostream>
+#include <vector>
 using namespace std;
 
 /*!
@@ -98,10 +99,15 @@ public:
    /*!
     *@brief   Get the best Position.
     *
+    *@param    deep    The Current search Deep.
+    *@param    root    Root of the GameTree.
+    *@param    alpha   Alpha
+    *@param    beta    Beta
+    *
     *@return   The best Position.
     */
-   Position GetBestPosition();
-   
+   Position GetBestPosition(int deep, Position root, int alpha, int beta, Position p);
+
    void Debug();
 public:
    /*!
@@ -118,6 +124,11 @@ public:
     *@brief   Keep the global Mark
     */
    int _globalScore;
+   
+   /*!
+    *@brief   Positions are going to Judge.
+    */
+   vector<Position> toJudge;
 };
 
 

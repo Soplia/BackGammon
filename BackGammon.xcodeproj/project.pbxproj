@@ -10,6 +10,7 @@
 		950C570921D90E8C00BFB1B1 /* Bench.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 950C570821D90E8C00BFB1B1 /* Bench.cpp */; };
 		950C570C21D9135A00BFB1B1 /* ChessBoard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 950C570A21D9135A00BFB1B1 /* ChessBoard.cpp */; };
 		950C570F21D9138B00BFB1B1 /* Position.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 950C570D21D9138B00BFB1B1 /* Position.cpp */; };
+		957E418B21DC0BE3001C6BED /* Node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 957E418A21DC0BE3001C6BED /* Node.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -32,6 +33,8 @@
 		950C570D21D9138B00BFB1B1 /* Position.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Position.cpp; sourceTree = "<group>"; };
 		950C570E21D9138B00BFB1B1 /* Position.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Position.hpp; sourceTree = "<group>"; };
 		957E418821D9141D001C6BED /* ConstantFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConstantFile.h; sourceTree = "<group>"; };
+		957E418921DC0BD0001C6BED /* Node.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Node.hpp; sourceTree = "<group>"; };
+		957E418A21DC0BE3001C6BED /* Node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Node.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +80,7 @@
 			children = (
 				950C570A21D9135A00BFB1B1 /* ChessBoard.cpp */,
 				950C570D21D9138B00BFB1B1 /* Position.cpp */,
+				957E418A21DC0BE3001C6BED /* Node.cpp */,
 			);
 			path = source;
 			sourceTree = "<group>";
@@ -86,6 +90,7 @@
 			children = (
 				950C570B21D9135A00BFB1B1 /* ChessBoard.hpp */,
 				950C570E21D9138B00BFB1B1 /* Position.hpp */,
+				957E418921DC0BD0001C6BED /* Node.hpp */,
 			);
 			path = header;
 			sourceTree = "<group>";
@@ -157,6 +162,7 @@
 				950C570921D90E8C00BFB1B1 /* Bench.cpp in Sources */,
 				950C570C21D9135A00BFB1B1 /* ChessBoard.cpp in Sources */,
 				950C570F21D9138B00BFB1B1 /* Position.cpp in Sources */,
+				957E418B21DC0BE3001C6BED /* Node.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

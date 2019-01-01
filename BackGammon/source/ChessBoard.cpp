@@ -6,10 +6,10 @@
  Copyright © 2018 QM. All rights reserved.
  
  */
-
-#include "ConstantFile.h"
 #include "ChessBoard.hpp"
 //#define _DEBUG
+//#define _DEBUG_MARK
+#define _DEBUG_BEST
 
 /*!
  *@brief   Whether the _chessBoard matrix is full or Not.
@@ -89,7 +89,7 @@ void ChessBoard::Display2()
 }
 
 /*!
- *@brief   Play the chess point into the ChessBoard.
+ *@brief   Play the chess Position into the ChessBoard.
  *
  *@param    x    The x index of the _chessBoard Matrix.
  *@param    y    The y index of the _chessBoard Matrix.
@@ -255,7 +255,7 @@ int ChessBoard::EvaluateChessBoard()
                res += _chessBoard[i][j] * cnt * cnt / 4;
             if (cnt >= 5)
                res = MAXN * _chessBoard[i][j];
-#ifdef _DEBUG
+#ifdef _DEBUG_MARK
             cout << "HORIZON: " << res << endl;
 #endif
             // 列
@@ -284,7 +284,7 @@ int ChessBoard::EvaluateChessBoard()
                res += _chessBoard[i][j] * cnt * cnt / 4;
             if (cnt >= 5)
                res = MAXN * _chessBoard[i][j];
-#ifdef _DEBUG
+#ifdef _DEBUG_MARK
             cout << "VERTICAL: " << res << endl;
 #endif
             // 左对角线 '\'
@@ -313,7 +313,7 @@ int ChessBoard::EvaluateChessBoard()
                res += _chessBoard[i][j] * cnt * cnt / 4;
             if (cnt >= 5)
                res = MAXN * _chessBoard[i][j];
-#ifdef _DEBUG
+#ifdef _DEBUG_MARK
             cout << "DIAGONAL2R: " << res << endl;
 #endif
             // 右对角线 /
@@ -335,7 +335,7 @@ int ChessBoard::EvaluateChessBoard()
                ++cnt;
             if (row > 0 && col < SIZE && _chessBoard[row][col] == EMPTY)
                flagR = true;
-#ifdef _DEBUG
+#ifdef _DEBUG_MARK
             cout << "flagL: " << flagL << " flagR: " << flagR << endl;
 #endif
             if (flagL && flagR)
@@ -344,7 +344,7 @@ int ChessBoard::EvaluateChessBoard()
                res += _chessBoard[i][j] * cnt * cnt / 4;
             if (cnt >= 5)
                res = MAXN * _chessBoard[i][j];
-#ifdef _DEBUG
+#ifdef _DEBUG_MARK
             cout << "DIAGONAL2L:" << res << endl;
 #endif
          }
@@ -368,11 +368,121 @@ void ChessBoard::Debug()
 /*!
  *@brief   Get the best Position.
  *
+ *@param    deep    The Current search Deep.
+ *@param    root    Root of the GameTree.
+ *@param    alpha   Alpha
+ *@param    beta    Beta
+ *
  *@return   The best Position.
  */
-Position GetBestPosition()
-{
-   Position temp;
-   return temp;
-}
 
+
+
+Position ChessBoard::GetBestPosition(int deep, Position root, int alpha, int beta, Position p)
+{
+   if (deep == SEARCH_DEEP)
+   {
+      root._score = EvaluateChessBoard();
+#ifdef _DEBUG_BEST
+      cout << p._x << " " << p._y <<" " << root._score << endl;
+#endif
+      return;
+   }
+   
+   //在已经落子的周围进行判断
+   vector<Position> judgeSet;
+   
+   for (auto valP : toJudge)
+      judgeSet.push_back(valP);
+   
+   for (auto it : judgeSet)
+   {
+      Position now = Position((Position)it);
+      
+      root.addChild(now);
+      
+      //确定是本来就有的，还是在DFS中，进行添加的（本来应该为空的位置）
+      bool flag=toJudge .contains(now);
+      
+      _chessBoard[now.y][now.x]=((deep&1)==1)?-1:1;
+      
+      //下完之后，立马进行判断
+      if(isEnd(now.x,now.y))
+      {
+         root.bestChild=node;
+         root._score=MAXN*chessBoard[now.y][now.x];
+         //恢复原样,并结束
+         chessBoard[now.y][now.x]=0;
+         return;
+      }
+      
+      //没有结束
+      bool flags[]=new bool[8]; //标记回溯时要不要删掉
+      Arrays.fill(flags,true);
+      
+      for(int i=0;i<8;++i)
+      {
+         Position next=new Position(now.x+dc[i],now.y+dr[i]);
+         if(1<=now.x+dc[i] && now.x+dc[i]<=size && 1<=now.y+dr[i] && now.y+dr[i]<=size && chessBoard[next.y][next.x]==0)
+         {
+            //再次进行扩展，合理，下次调用该函数便从给这里进行判断
+            if(!toJudge.contains(next))
+            {
+               toJudge.add(next);
+            }
+            //如果本来就有则标记为假
+            else
+               flags[i]=false;
+         }
+      }
+      //是得去了，要不然就没有结局了。如果不是在本轮中新加的，就把它去掉，要不然没玩。
+      if(flag)
+         toJudge.remove(now);
+      
+      dfs(deep+1,root.getLastChild(),alpha,beta,now);
+      
+      //从下一轮回到了现在，再给它加上
+      chessBoard[now.y][now.x]=0;
+      if(flag)
+         toJudge.add(now);
+      
+      
+      for(int i=0;i<8;++i)
+         if(flags[i])
+            toJudge.remove(new Position(now.x+dc[i],now.y+dr[i]));
+      
+      // alpha beta剪枝
+      // min层
+      if((deep&1)==1)
+      {
+         if(root.bestChild==null || root.getLastChild()._score<root.bestChild._score)
+         {
+            root.bestChild=root.getLastChild();
+            root._score=root.bestChild._score;
+            //这个是为什么
+            if(root._score<=MINN)
+               root._score+=deep;
+            beta=Math.min(root._score,beta);
+         }
+         if(root._score<=alpha)
+            return;
+      }
+      
+      // max层
+      else
+      {
+         if(root.bestChild==null || root.getLastChild()._score>root.bestChild._score)
+         {
+            root.bestChild=root.getLastChild();
+            root._score=root.bestChild._score;
+            //这个是为什么
+            if(root._score==MAXN)
+               root._score-=deep;
+            alpha=Math.max(root._score,alpha);
+         }
+         if(root._score>=beta)
+            return;
+      }
+   }
+   // if(deep==0) System.out.printf("******************************************\n");
+}

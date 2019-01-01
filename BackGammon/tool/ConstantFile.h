@@ -16,9 +16,14 @@
 #pragma once
 
 /*!
+ *@brief   Represent the search Deep.
+ */
+const int SEARCH_DEEP = 4;
+
+/*!
  *@brief   Represent the max value in this Project.
  */
-const int MAXN=1 << 28;
+const int MAXN = 1 << 28;
 
 /*!
  *@brief   Represent the min value in this Project.
