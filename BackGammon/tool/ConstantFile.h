@@ -16,6 +16,16 @@
 #pragma once
 
 /*!
+ *@brief   Represent the max value in this Project.
+ */
+const int MAXN=1 << 28;
+
+/*!
+ *@brief   Represent the min value in this Project.
+ */
+const int MINN = -MAXN;
+
+/*!
  *@brief   The size of the Chessboard.
  */
 const int SIZE = 16;
@@ -38,7 +48,7 @@ const int ATTACKER = 1;
 /*!
  *@brief   Represent the User. "⊙"
  */
-const int DEFENDER = 2;
+const int DEFENDER = -1;
 
 /*!
  *@brief   Represent the horizon Direction.

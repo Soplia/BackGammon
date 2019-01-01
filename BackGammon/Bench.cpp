@@ -37,8 +37,12 @@ int main(void)
    
    cout << endl << endl;
    
-   for (int i = 5; i <=7; i++)
+   for (int i = 5; i <=9; i++)
+   {
       C.Play(5, i, ATTACKER);
+      cout << C.EvaluateChessBoard() << endl;
+   }
+   C.Debug();
    C.Display2();
    if (C.IsWin())
       cout << "win" << endl;

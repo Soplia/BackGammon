@@ -9,7 +9,7 @@
 
 #include "ConstantFile.h"
 #include "ChessBoard.hpp"
-#define _DEBUG
+//#define _DEBUG
 
 /*!
  *@brief   Whether the _chessBoard matrix is full or Not.
@@ -61,9 +61,9 @@ void ChessBoard::Display()
 {
    for (int i = 1; i<SIZE; i++)
    {
-      std::cout << " | ";
+      std::cout << "|";
       for (int j = 1; j<SIZE; j++)
-         std::cout << _chessBoard[i][j] << " | ";
+         std::cout << _chessBoard[i][j] << "|";
       std::cout << std::endl;
    }
    
@@ -79,11 +79,11 @@ void ChessBoard::Display2()
    {
       for (int j = 1; j < SIZE; j++)
          if (_chessBoard[i][j] == ATTACKER)
-            cout << "⊕ ";
+            cout << "⊕ "; //➊➋⊕⊙○●◆▼◎⊕▣∅●
          else if (_chessBoard[i][j] == DEFENDER)
             cout << "⊙ ";
          else if (_chessBoard[i][j] == EMPTY)
-            cout << "□ ";
+            cout << "∅ "; //❉✿❀❁✪❂
       cout << endl;
    }
 }
@@ -216,13 +216,153 @@ int ChessBoard::IsWin() // Judge In four directions
 }
 
 /*!
- *@brief   Evaluate the ChessBoard then give a Mark.
+ *@brief   Evaluate the whole chessBoard then give a Mark.
  *
  *@return   The mark this evaluation Got.
  */
-int EvaluateChessBoard()
+int ChessBoard::EvaluateChessBoard()
 {
-   return 1;
+   int res = 0;
+   for (int i = 1; i < SIZE; i++)
+   {
+      for (int j = 1; j< SIZE; j++)
+      {
+         if (_chessBoard[i][j] != EMPTY)
+         {
+            // 行
+            bool flagL = false, flagR = false;
+            int x = j, y = i;
+            int cnt = 1;
+            
+            int col = x, row = y;
+            //不能出界, 遇到与当前位置不同颜色的棋子便停止 ,向左搜索
+            while (--col > 0 && _chessBoard[row][col] == _chessBoard[y][x])
+               cnt++;
+            if (col > 0 && _chessBoard[row][col] == EMPTY)
+               flagL = true;
+            
+            col = x;
+            row = y;
+            
+            while (++col < SIZE && _chessBoard[row][col] == _chessBoard[y][x])
+               ++cnt;
+            if (col < SIZE && _chessBoard[row][col] == EMPTY)
+               flagR=true;
+            
+            if (flagL && flagR)
+               res += _chessBoard[i][j] * cnt * cnt;
+            else if (flagL || flagR)
+               res += _chessBoard[i][j] * cnt * cnt / 4;
+            if (cnt >= 5)
+               res = MAXN * _chessBoard[i][j];
+#ifdef _DEBUG
+            cout << "HORIZON: " << res << endl;
+#endif
+            // 列
+            col = x;
+            row = y;
+            cnt = 1;
+            flagL = false;
+            flagR = false;
+            
+            while (--row > 0 && _chessBoard[row][col] == _chessBoard[y][x])
+               ++cnt;
+            if (row > 0 && _chessBoard[row][col] == EMPTY)
+               flagL=true;
+            
+            col = x;
+            row = y;
+            
+            while (++row < SIZE && _chessBoard[row][col] == _chessBoard[y][x])
+               ++cnt;
+            if (row < SIZE && _chessBoard[row][col] == EMPTY)
+               flagR = true;
+            
+            if (flagL && flagR)
+               res += _chessBoard[i][j] * cnt * cnt;
+            else if (flagL || flagR)
+               res += _chessBoard[i][j] * cnt * cnt / 4;
+            if (cnt >= 5)
+               res = MAXN * _chessBoard[i][j];
+#ifdef _DEBUG
+            cout << "VERTICAL: " << res << endl;
+#endif
+            // 左对角线 '\'
+            col = x;
+            row = y;
+            cnt = 1;
+            flagL = false;
+            flagR = false;
+            
+            while(--col > 0 && --row > 0 && _chessBoard[row][col] == _chessBoard[y][x])
+               ++cnt;
+            if(col > 0 && row > 0 && _chessBoard[row][col] == EMPTY)
+               flagL = true;
+            
+            col = x;
+            row = y;
+            
+            while (++col < SIZE && ++row < SIZE && _chessBoard[row][col] == _chessBoard[y][x])
+               ++cnt;
+            if (col < SIZE && row < SIZE && _chessBoard[row][col] == EMPTY)
+               flagR=true;
+            
+            if (flagL && flagR)
+               res += _chessBoard[i][j] * cnt * cnt;
+            else if (flagL || flagR)
+               res += _chessBoard[i][j] * cnt * cnt / 4;
+            if (cnt >= 5)
+               res = MAXN * _chessBoard[i][j];
+#ifdef _DEBUG
+            cout << "DIAGONAL2R: " << res << endl;
+#endif
+            // 右对角线 /
+            col = x;
+            row = y;
+            cnt = 1;
+            flagL = false;
+            flagR = false;
+            
+            while (++row < SIZE && --col > 0 && _chessBoard[row][col] == _chessBoard[y][x])
+               ++cnt;
+            if(row < SIZE && col > 0 && _chessBoard[row][col] == 0)
+               flagL = true;
+            
+            col = x;
+            row = y;
+            
+            while (--row > 0 && ++col < SIZE && _chessBoard[row][col] == _chessBoard[y][x])
+               ++cnt;
+            if (row > 0 && col < SIZE && _chessBoard[row][col] == EMPTY)
+               flagR = true;
+#ifdef _DEBUG
+            cout << "flagL: " << flagL << " flagR: " << flagR << endl;
+#endif
+            if (flagL && flagR)
+               res += _chessBoard[i][j] * cnt * cnt;
+            else if (flagL || flagR)
+               res += _chessBoard[i][j] * cnt * cnt / 4;
+            if (cnt >= 5)
+               res = MAXN * _chessBoard[i][j];
+#ifdef _DEBUG
+            cout << "DIAGONAL2L:" << res << endl;
+#endif
+         }
+      }
+   }
+   return res;
+}
+
+void ChessBoard::Debug()
+{
+   for (int i = 1; i < SIZE; ++i)
+   {
+      for (int j = 1; j < SIZE; ++j)
+      {
+         cout << _chessBoard[i][j] << " ";
+      }
+      cout << endl;
+   }
 }
 
 /*!

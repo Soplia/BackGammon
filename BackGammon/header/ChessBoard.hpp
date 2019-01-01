@@ -89,7 +89,7 @@ public:
    bool IsSame(int beginX, int beginY, int type, int lengthToCompare);
    
    /*!
-    *@brief   Evaluate the ChessBoard then give a Mark.
+    *@brief   Evaluate the whole chessBoard then give a Mark.
     *
     *@return   The mark this evaluation Got.
     */
@@ -101,6 +101,8 @@ public:
     *@return   The best Position.
     */
    Position GetBestPosition();
+   
+   void Debug();
 public:
    /*!
     *@brief   Matrix contain the whole ChessBoard
