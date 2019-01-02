@@ -19,36 +19,15 @@
 
 int main(void)
 {
-   Position myPos;
-   myPos.Display();
-   
-   myPos.SetXY(1, 2);
-   myPos.Display();
-   
-   myPos.SetPlayer(2);
-   myPos.Display();
-   
-   myPos.SetScore(4);
-   myPos.Display();
-   
    ChessBoard C;
-   //C.Display();
    
-   
-   cout << endl << endl;
-   
-   for (int i = 5; i <=9; i++)
+   for (int i = 1; i <=5; i++)
    {
-      C.Play(5, i, ATTACKER);
-      cout << C.EvaluateChessBoard() << endl;
+      C.Play(2, i, ATTACKER);
+      cout << "The mark of ChessBoard: " << C.EvaluateChessBoard() << endl;
+      C.Display2();
+      cout << endl;
    }
-   C.Debug();
-   C.Display2();
-   if (C.IsWin())
-      cout << "win" << endl;
-   else
-      cout << "false" << endl;
-   
    
    return 0;
 }

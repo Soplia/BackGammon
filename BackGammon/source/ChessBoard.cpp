@@ -12,6 +12,22 @@
 #define _DEBUG_BEST
 
 /*!
+ *@brief A constructor, init the _chessBoard matriz to Zero.
+ */
+ChessBoard::ChessBoard()
+{
+   Init(0);
+}
+
+/*!
+ *@brief A constructor, init the _chessBoard matriz to Zero.
+ */
+void ChessBoard::CleanChessBoard()
+{
+   Init(0);
+}
+
+/*!
  *@brief   Whether the _chessBoard matrix is full or Not.
  *
  *@return   true: full false: not Full
@@ -23,7 +39,7 @@ bool ChessBoard::IsFull()
    {
       for (int j = 1; j<SIZE; j++)
       {
-         if (_chessBoard[i][j] == 0)
+         if (_chessBoard[i][j] == EMPTY)
          {
             f = false;
          }
@@ -35,7 +51,7 @@ bool ChessBoard::IsFull()
 /*!
  *@brief   Init the _chessBoard matrix to x.
  *
- *@param    x    The value to be Assigned.
+ *@param    x    The value assigned to the _chessBoard.
  */
 void ChessBoard::Init(int x)
 {
@@ -44,14 +60,12 @@ void ChessBoard::Init(int x)
       for (int j = 1; j<SIZE; j++)
          _chessBoard[i][j] = x;
    }
-}
-
-/*!
- *@brief A constructor, init the _chessBoard matriz to Zero.
- */
-void ChessBoard::CleanChessBoard()
-{
-   Init(0);
+   
+   _toJudge.clear();
+   _node.clear();
+   
+   _bestNode = new Position();
+   _bestNode = nullptr;
 }
 
 /*!
@@ -74,7 +88,7 @@ void ChessBoard::Display()
  */
 void ChessBoard::Display2()
 {
-   cout << "The contents of _state:" << endl;
+   //cout << "The contents of _chessBoard:" << endl;
    for (int i = 1; i < SIZE; i++)
    {
       for (int j = 1; j < SIZE; j++)
@@ -89,6 +103,17 @@ void ChessBoard::Display2()
 }
 
 /*!
+ *@brief   Get the last node from _node.
+ *
+ *@return   The last Node.
+ */
+Position ChessBoard::GetLastNode()
+{
+   //这个地方写的有问题
+   return _node.back();
+}
+
+/*!
  *@brief   Play the chess Position into the ChessBoard.
  *
  *@param    x    The x index of the _chessBoard Matrix.
@@ -99,12 +124,98 @@ void ChessBoard::Play(int x, int y, int who)
 {
    _chessBoard[x][y] = who;
    _latestPosition.SetXY(x, y);
+   _latestPosition._player = who;
+   
+   if (IsWin(_latestPosition))
+   {
+      if (_latestPosition._player == DEFENDER)
+         cout << "DEFENDER WIN" << endl;
+      else if(_latestPosition._player == ATTACKER)
+         cout << "ATTACKER WIN" << endl;
+      
+      //Init(0);
+   }
+   
+   // 以下为自己补充
+   Position p(x, y);
+   
+   //如果已经下了就移除
+   if (ToJudgeContain(p))
+      ToJudgeDelete(p);
+   //不管是谁下的都把它周围八个方向未下的位置作为代下点
+   
+   for (int i = 0; i < 8; ++i)
+   {
+      Position now(x + DC[i], y + DR[i]);
+      if(1 <= now._x && now._x < SIZE && 1 <= now._y && now._y < SIZE && \
+         _chessBoard[now._y][now._x] == EMPTY)
+         _toJudge.push_back(now);
+   }
+   
 }
 
-
-ChessBoard::ChessBoard()
+/*!
+ *@brief   Find the index of the specific position in _toJudge.
+ *
+ *@param    p    The specific Position.
+ *
+ *@return   1 ~ SIZE-1: Finded / -1: does not Finded.
+ */
+int ChessBoard::ToJudgeFind(Position p)
 {
-   Init(0);
+   bool flag = false;
+   int i = 0;
+   long count = _toJudge.size();
+   for (; i < count; i++)
+      if (_toJudge[i] == p)
+      {
+         flag = true;
+         break;
+      }
+   if (flag)
+      return i;
+   else
+      return -1;
+}
+
+/*!
+ *@brief   Whether _toJudge contain the specific Position.
+ *
+ *@param    p    The specific Position.
+ *
+ *@return   true: contain / false: do not Contain.
+ */
+bool ChessBoard::ToJudgeContain(Position p)
+{
+   int index = ToJudgeFind(p);
+   if (index == -1)
+      return false;
+   else
+      return true;
+}
+
+/*!
+ *@brief   Delete p in _toJudge.
+ *
+ *@param    p    The specific Position.
+ *
+ *@return   true: delete / false: do not Delete.
+ */
+bool ChessBoard::ToJudgeDelete(Position p)
+{
+   if (_toJudge.empty())
+      return false;
+   else
+   {
+      int index = ToJudgeFind(p);
+      if (index == -1)
+         return false;
+      else
+      {
+         _toJudge.erase(_toJudge.begin() + index);
+         return true;
+      }
+   }
 }
 
 /*!
@@ -181,16 +292,16 @@ bool ChessBoard::IsSame(int beginX, int beginY , int type, int lengthToCompare)
 
 /*!
  *@brief   Whether win or Not
- *
+ *@param    p    The latsest played Position.
  *@return   true: yes, someone win / false: no, nobady Win.
  */
-int ChessBoard::IsWin() // Judge In four directions
+bool ChessBoard::IsWin(Position p)
 {
 #ifdef  _DEBUG
    cout << "ChessBoard_IsWin:" << endl;
 #endif
-   int x = _latestPosition._x;
-   int y = _latestPosition._y;
+   int x = p._x;
+   int y = p._y;
    
    for (int i = (y - OFFSET < 1 ? 1 : y - OFFSET); i <= y; i++)
       if (IsSame(x, i, HORIZON, 5))
@@ -353,38 +464,21 @@ int ChessBoard::EvaluateChessBoard()
    return res;
 }
 
-void ChessBoard::Debug()
-{
-   for (int i = 1; i < SIZE; ++i)
-   {
-      for (int j = 1; j < SIZE; ++j)
-      {
-         cout << _chessBoard[i][j] << " ";
-      }
-      cout << endl;
-   }
-}
-
 /*!
  *@brief   Get the best Position.
  *
  *@param    deep    The Current search Deep.
- *@param    root    Root of the GameTree.
+ *@param    root    Root of the GameTree, the best Position.
  *@param    alpha   Alpha
  *@param    beta    Beta
- *
- *@return   The best Position.
  */
-
-
-
-Position ChessBoard::GetBestPosition(int deep, Position root, int alpha, int beta, Position p)
+void ChessBoard::GetBestPosition(int deep, Position root, int alpha, int beta, Position p)
 {
    if (deep == SEARCH_DEEP)
    {
-      root._score = EvaluateChessBoard();
+      root._mark = EvaluateChessBoard();
 #ifdef _DEBUG_BEST
-      cout << p._x << " " << p._y <<" " << root._score << endl;
+      cout << p._x << " " << p._y <<" " << root._mark << endl;
 #endif
       return;
    }
@@ -392,43 +486,45 @@ Position ChessBoard::GetBestPosition(int deep, Position root, int alpha, int bet
    //在已经落子的周围进行判断
    vector<Position> judgeSet;
    
-   for (auto valP : toJudge)
+   for (auto valP : _toJudge)
       judgeSet.push_back(valP);
    
    for (auto it : judgeSet)
    {
       Position now = Position((Position)it);
       
-      root.addChild(now);
+      _node.push_back(now);
       
       //确定是本来就有的，还是在DFS中，进行添加的（本来应该为空的位置）
-      bool flag=toJudge .contains(now);
+      bool flag = ToJudgeContain(now);
       
-      _chessBoard[now.y][now.x]=((deep&1)==1)?-1:1;
+      //(1)_chessBoard[now._y][now._x] = (( deep & 1 ) == 1 ) ? DEFENDER : ATTACKER;
+      _chessBoard[now._x][now._y] = (( deep & 1 ) == 1 ) ? DEFENDER : ATTACKER;
       
       //下完之后，立马进行判断
-      if(isEnd(now.x,now.y))
+      if (IsWin(Position(now._x, now._y)))
       {
-         root.bestChild=node;
-         root._score=MAXN*chessBoard[now.y][now.x];
+         root.SetXY(now._x, now._y);
+         root._mark = MAXN * _chessBoard[now._y][now._x];
          //恢复原样,并结束
-         chessBoard[now.y][now.x]=0;
+         _chessBoard[now._y][now._x] = EMPTY;
          return;
       }
       
       //没有结束
-      bool flags[]=new bool[8]; //标记回溯时要不要删掉
-      Arrays.fill(flags,true);
+      bool flags[8]; //标记回溯时要不要删掉
+      memset(flags, true, sizeof(bool) * 8);
       
-      for(int i=0;i<8;++i)
+      for (int i = 0; i < 8; ++i)
       {
-         Position next=new Position(now.x+dc[i],now.y+dr[i]);
-         if(1<=now.x+dc[i] && now.x+dc[i]<=size && 1<=now.y+dr[i] && now.y+dr[i]<=size && chessBoard[next.y][next.x]==0)
+         Position next(now._x + DC[i], now._y + DR[i]);
+         if(1 <= now._x + DC[i] && now._x + DC[i]  < SIZE && 1 <= now._y + DR[i] \
+            && now._y + DR[i] < SIZE && _chessBoard[next._y][next._x] == EMPTY)
          {
             //再次进行扩展，合理，下次调用该函数便从给这里进行判断
-            if(!toJudge.contains(next))
+            if(ToJudgeContain(next))
             {
-               toJudge.add(next);
+               _toJudge.push_back(next);
             }
             //如果本来就有则标记为假
             else
@@ -437,52 +533,69 @@ Position ChessBoard::GetBestPosition(int deep, Position root, int alpha, int bet
       }
       //是得去了，要不然就没有结局了。如果不是在本轮中新加的，就把它去掉，要不然没玩。
       if(flag)
-         toJudge.remove(now);
+         ToJudgeDelete(now);
       
-      dfs(deep+1,root.getLastChild(),alpha,beta,now);
+      GetBestPosition(deep + 1, GetLastNode(), alpha, beta, now);
       
       //从下一轮回到了现在，再给它加上
-      chessBoard[now.y][now.x]=0;
-      if(flag)
-         toJudge.add(now);
+      //(2)_chessBoard[now._y][now._x] = EMPTY;
+      _chessBoard[now._x][now._y] = EMPTY;
+      
+      if (flag)
+         _toJudge.push_back(now);
       
       
-      for(int i=0;i<8;++i)
-         if(flags[i])
-            toJudge.remove(new Position(now.x+dc[i],now.y+dr[i]));
+      for (int i = 0; i < 8; ++i)
+         if (flags[i])
+            ToJudgeDelete(Position(now._x + DC[i], now._y + DR[i]));
       
       // alpha beta剪枝
       // min层
-      if((deep&1)==1)
+      if ((deep & 1) == 1)
       {
-         if(root.bestChild==null || root.getLastChild()._score<root.bestChild._score)
+         if (_bestNode == nullptr || GetLastNode()._mark < _bestNode->_mark)
          {
-            root.bestChild=root.getLastChild();
-            root._score=root.bestChild._score;
+            Position temp = GetLastNode();
+            _bestNode = &temp;
+            root._mark = _bestNode->_mark;
             //这个是为什么
-            if(root._score<=MINN)
-               root._score+=deep;
-            beta=Math.min(root._score,beta);
+            if(root._mark <= MINN)
+               root._mark += deep;
+            beta = min(root._mark, beta);
          }
-         if(root._score<=alpha)
+         if(root._mark <= alpha)
             return;
       }
-      
       // max层
       else
       {
-         if(root.bestChild==null || root.getLastChild()._score>root.bestChild._score)
+         if(_bestNode == nullptr || GetLastNode()._mark > _bestNode->_mark)
          {
-            root.bestChild=root.getLastChild();
-            root._score=root.bestChild._score;
+            Position temp = GetLastNode();
+            _bestNode = &temp;
+            root._mark = _bestNode->_mark;
             //这个是为什么
-            if(root._score==MAXN)
-               root._score-=deep;
-            alpha=Math.max(root._score,alpha);
+            if(root._mark == MAXN)
+               root._mark -= deep;
+            alpha = max(root._mark, alpha);
          }
-         if(root._score>=beta)
+         if(root._mark >= beta)
             return;
       }
    }
-   // if(deep==0) System.out.printf("******************************************\n");
+   
+#ifdef _DEBUG_BEST
+   if(deep == 0)
+      cout << "******************************************\n";
+#endif
+}
+
+/*!
+ *@brief   The whole process of AI to Play.
+ */
+void ChessBoard::AI()
+{
+   Position node;
+   GetBestPosition(0, node, MINN, MAXN, node);
+   Play(node._x, node._y, ATTACKER);
 }

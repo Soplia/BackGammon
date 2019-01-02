@@ -8,7 +8,7 @@
  */
 
 #include "Position.hpp"
-#define _DEBUG
+//#define _DEBUG
 
 /*!
  *@brief   A Constructor.
@@ -17,7 +17,7 @@ Position::Position()
 {
    _x = 0;
    _y = 0;
-   _score = 0;
+   _mark = 0;
    _player = 0;
 }
 
@@ -41,7 +41,7 @@ void Position::Display()
    cout << "Position_Display:" << endl;
 #endif
    cout << "_x = " << _x << "; _y = " << _y << \
-   "; _socre " << _score << "; _player = " << _player << endl;
+   "; _socre " << _mark << "; _player = " << _player << endl;
 }
 
 /*!
@@ -73,7 +73,7 @@ void Position::SetXY(int x, int y)
 }
 
 /*!
- *@brief   Set _score
+ *@brief   Set _mark
  *
  *@param    x    The target Score.
  */
@@ -82,5 +82,5 @@ void Position::SetScore(int x)
 #ifdef  _DEBUG
    cout << "Position_SetScore:" << endl;
 #endif
-   _score = x;
+   _mark = x;
 }

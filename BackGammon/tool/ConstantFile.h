@@ -16,6 +16,16 @@
 #pragma once
 
 /*!
+ *@brief   Represent the row direction Offset.
+ */
+const int DR[] = {-1,1,-1,1,0,0,-1,1};
+
+/*!
+ *@brief   Represent the col direction Offset.
+ */
+const int DC[] = {1,-1,-1,1,-1,1,0,0};
+
+/*!
  *@brief   Represent the search Deep.
  */
 const int SEARCH_DEEP = 4;
@@ -33,7 +43,7 @@ const int MINN = -MAXN;
 /*!
  *@brief   The size of the Chessboard.
  */
-const int SIZE = 16;
+const int SIZE = 6;
 
 /*!
  *@brief   Represent the Offset (5-1).

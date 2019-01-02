@@ -64,6 +64,12 @@ public:
     *@brief   Display the contents of Positin.
     */
    void Display();
+   
+   bool operator == (const Position & obj) const
+   {
+      return _x == obj._x && _y == obj._y;
+   }
+
 public:
    /*!
     *@brief   The x Index.
@@ -78,7 +84,7 @@ public:
    /*!
     *@brief   The mark of this Position.
     */
-   int _score;
+   int _mark;
 
    /*!
     *@brief   Represent who played on this Position.

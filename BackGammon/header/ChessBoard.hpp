@@ -19,10 +19,12 @@
 #include "ConstantFile.h"
 #include <iostream>
 #include <vector>
+#include <cmath>
 using namespace std;
 
 /*!
  *@class ChessBoard
+ *@note User First.
  */
 class ChessBoard
 {
@@ -35,7 +37,7 @@ public:
    /*!
     *@brief   Init the _chessBoard matrix to x.
     *
-    *@param    x    The value to be Assigned.
+    *@param    x    The value assigned to the _chessBoard.
     */
    void Init(int x);
 
@@ -72,10 +74,10 @@ public:
 
    /*!
     *@brief   Whether win or Not
-    *
+    *@param    p    The latsest played Position.
     *@return   true: yes, someone win / false: no, nobady Win.
     */
-   int IsWin();
+   bool IsWin(Position p);
 
    /*!
     *@brief   Whether the "lengthToCompare" positions are played by the same User?
@@ -100,15 +102,52 @@ public:
     *@brief   Get the best Position.
     *
     *@param    deep    The Current search Deep.
-    *@param    root    Root of the GameTree.
+    *@param    root    Root of the GameTree, the best Position.
     *@param    alpha   Alpha
     *@param    beta    Beta
-    *
-    *@return   The best Position.
     */
-   Position GetBestPosition(int deep, Position root, int alpha, int beta, Position p);
+   void GetBestPosition(int deep, Position root, int alpha, int beta, Position p);
 
-   void Debug();
+   /*!
+    *@brief   Get the last node from _node.
+    *
+    *@return   The last Node.
+    */
+   Position GetLastNode();
+   
+   /*!
+    *@brief   Find the index of the specific position in _toJudge.
+    *
+    *@param    p    The specific Position.
+    *
+    *@return   1 ~ SIZE-1: Finded / -1: does not Finded.
+    */
+   int ToJudgeFind(Position p);
+   
+   /*!
+    *@brief   Whether _toJudge contain the specific Position.
+    *
+    *@param    p    The specific Position.
+    *
+    *@return   true: contain / false: do not Contain.
+    */
+   bool ToJudgeContain(Position p);
+   
+   /*!
+    *@brief   Delete p in _toJudge.
+    *
+    *@param    p    The specific Position.
+    *
+    *@return   true: delete / false: do not Delete.
+    */
+   bool ToJudgeDelete(Position p);
+   
+   /*!
+    *@brief   The whole process of AI to Play.
+    */
+   void AI();
+
+   
 public:
    /*!
     *@brief   Matrix contain the whole ChessBoard
@@ -116,19 +155,29 @@ public:
    int _chessBoard[SIZE][SIZE];
 
    /*!
-    *@brief   Keep the latest Step
+    *@brief   Keep the latest play step, use it to judge whether win or Not.
     */
    Position _latestPosition;
    
    /*!
-    *@brief   Keep the global Mark
+    *@brief   Keep the latest Node.
+    */
+   Position * _bestNode;
+   
+   /*!
+    *@brief   Keep the global Mark, It seems useless.
     */
    int _globalScore;
    
    /*!
     *@brief   Positions are going to Judge.
     */
-   vector<Position> toJudge;
+   vector<Position> _toJudge;
+   
+   /*!
+    *@brief   Nodes generated during DFS.
+    */
+   vector<Position> _node;
 };
 
 
