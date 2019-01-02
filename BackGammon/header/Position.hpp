@@ -8,9 +8,9 @@
  @version 1.00 2018/12/30 Creation
  
  @note
- Header file for Position
- COMPLIER: Xcode - Version 9.0 beta 3
- Copyright © 2018 QM. All rights reserved.
+    Header file for Position.
+    COMPLIER: Xcode - Version 9.0 beta 3.
+    Copyright © 2018 QM. All rights reserved.
  
  */
 

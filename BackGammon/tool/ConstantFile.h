@@ -8,9 +8,9 @@
  @version 1.00 2018/12/30 Creation
  
  @note
- File for Constant
- COMPLIER: Xcode - Version 9.0 beta 3
- Copyright © 2018 QM. All rights reserved.
+    File for Constant.
+    COMPLIER: Xcode - Version 9.0 beta 3.
+    Copyright © 2018 QM. All rights reserved.
  */
 
 #pragma once
@@ -84,3 +84,18 @@ const int DIAGONAL2R = 3;
  *@brief   Represent the diagonal from right to left (up to down /).
  */
 const int DIAGONAL2L = 4;
+
+/*************************************************************************************/
+#define N 624
+#define M 397
+/** @brief  Constant vector A. */
+#define MATRIX_A 0x9908b0dfUL
+/** @brief  Most significant w-r bits. */
+#define UPPER_MASK 0x80000000UL
+/** @brief  Least significant r bits. */
+#define LOWER_MASK 0x7fffffffUL
+/** @brief  The array for the state vector. */
+static unsigned long mt[N];
+/** @brief  mti==N+1 means mt[N] is not initialized. */
+static int mti = N + 1;
+/*************************************************************************************/

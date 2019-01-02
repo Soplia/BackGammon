@@ -8,15 +8,16 @@
  @version 1.00 2018/12/30 Creation
  
  @note
- Header file for ChessBoard
- COMPLIER: Xcode - Version 9.0 beta 3
- Copyright © 2018 QM. All rights reserved.
+    Header file for ChessBoard.
+    COMPLIER: Xcode - Version 9.0 beta 3.
+    Copyright © 2018 QM. All rights reserved.
  */
 
 
 #pragma once
 #include "Position.hpp"
 #include "ConstantFile.h"
+#include "MTRandom.hpp"
 #include <iostream>
 #include <vector>
 #include <cmath>
@@ -73,11 +74,22 @@ public:
    void Play(int x, int y, int who);
 
    /*!
-    *@brief   Whether win or Not
+    *@brief   Whether win or Not.
     *@param    p    The latsest played Position.
     *@return   true: yes, someone win / false: no, nobady Win.
     */
    bool IsWin(Position p);
+   
+   /*!
+    *@brief   Whether win or Not.
+    *
+    *@param    x    x index of Position.
+    *@param    y    y index of Position.
+    *
+    *@return   true: yes, someone win / false: no, nobady Win.
+    */
+   bool IsWin2(int x, int y);
+
 
    /*!
     *@brief   Whether the "lengthToCompare" positions are played by the same User?
@@ -147,6 +159,11 @@ public:
     */
    void AI();
 
+   /*!
+    *@brief   The whole process of User to Play.
+    */
+   void User();
+
    
 public:
    /*!
@@ -178,6 +195,8 @@ public:
     *@brief   Nodes generated during DFS.
     */
    vector<Position> _node;
+   
+   MTRandom _random;
 };
 
 

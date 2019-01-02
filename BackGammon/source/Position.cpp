@@ -2,9 +2,8 @@
  @author Created by Jiarui XIE on 2018/12/30
  
  @note
- COMPLIER: Xcode - Version 9.0 beta 3
- Copyright © 2018 QM. All rights reserved.
- 
+   COMPLIER: Xcode - Version 9.0 beta 3.
+   Copyright © 2018 QM. All rights reserved.
  */
 
 #include "Position.hpp"

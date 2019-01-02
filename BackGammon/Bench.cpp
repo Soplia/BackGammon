@@ -8,9 +8,9 @@
  @version 1.00 2018/12/30 Creation
  
  @note
- File for Validation
- COMPLIER: Xcode - Version 9.0 beta 3
- Copyright © 2018 QM. All rights reserved.
+    File for Validation
+    COMPLIER: Xcode - Version 9.0 beta 3
+    Copyright © 2018 QM. All rights reserved.
  */
 
 #include <cstdlib>
@@ -21,12 +21,15 @@ int main(void)
 {
    ChessBoard C;
    
-   for (int i = 1; i <=5; i++)
+   for (int i = 1; i <=1; i++)
    {
-      C.Play(2, i, ATTACKER);
-      cout << "The mark of ChessBoard: " << C.EvaluateChessBoard() << endl;
+      cout << i << "th step: " << endl;
+      C.User();
       C.Display2();
       cout << endl;
+      C.AI();
+      cout << "The mark of ChessBoard: " << C.EvaluateChessBoard() << endl;
+      C.Display2();
    }
    
    return 0;
