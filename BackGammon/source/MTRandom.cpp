@@ -76,6 +76,6 @@ unsigned long MTRandom::GenrandInt32(void)
  */
 int MTRandom::GenrandInt15(void)
 {
-   return (int)(GenrandInt32()*(1.0 / 4294967295.0) * 14) + 1;
+   return (int)(GenrandInt32()*(1.0 / 4294967295.0) * 6) + 1;
    /* divided by 2^32-1 */
 }

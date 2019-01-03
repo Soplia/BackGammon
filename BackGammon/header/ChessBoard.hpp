@@ -114,11 +114,10 @@ public:
     *@brief   Get the best Position.
     *
     *@param    deep    The Current search Deep.
-    *@param    root    Root of the GameTree, the best Position.
     *@param    alpha   Alpha
     *@param    beta    Beta
     */
-   void GetBestPosition(int deep, Position root, int alpha, int beta, Position p);
+   void GetBestPosition(int deep, int alpha, int beta, Position p);
 
    /*!
     *@brief   Get the last node from _node.
@@ -155,6 +154,12 @@ public:
    bool ToJudgeDelete(Position p);
    
    /*!
+    *@brief   Is the best node null or Not.
+    *@return   true: NULL / false: not NULL.
+    */
+   bool IsBestNodeNull();
+   
+   /*!
     *@brief   The whole process of AI to Play.
     */
    void AI();
@@ -179,12 +184,17 @@ public:
    /*!
     *@brief   Keep the latest Node.
     */
-   Position * _bestNode;
+   Position  _bestNode;
    
    /*!
     *@brief   Keep the global Mark, It seems useless.
     */
    int _globalScore;
+   
+   /*!
+    *@brief   Represent the finish of this Game.
+    */
+   bool isFinished;
    
    /*!
     *@brief   Positions are going to Judge.

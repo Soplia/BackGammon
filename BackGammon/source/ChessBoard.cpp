@@ -49,6 +49,15 @@ bool ChessBoard::IsFull()
 }
 
 /*!
+ *@brief   Is the best node null or Not.
+ *@return   true: NULL / false: not NULL.
+ */
+bool ChessBoard::IsBestNodeNull()
+{
+   return !_bestNode._x || !_bestNode._y;
+}
+
+/*!
  *@brief   Init the _chessBoard matrix to x.
  *
  *@param    x    The value assigned to the _chessBoard.
@@ -64,10 +73,12 @@ void ChessBoard::Init(int x)
    _toJudge.clear();
    _node.clear();
    
-   //_bestNode = new Position();
-   _bestNode = nullptr;
+   //都在(0,0)即为NULL
+   _bestNode.SetXY(0, 0);
+   
+   isFinished = false;
    //随机的开关
-   //_random.InitGenrand((unsigned long)time(NULL))
+   _random.InitGenrand((unsigned long)time(NULL));
 }
 
 /*!
@@ -95,11 +106,11 @@ void ChessBoard::Display2()
    {
       for (int j = 1; j < SIZE; j++)
          if (_chessBoard[i][j] == ATTACKER)
-            cout << "⊕ "; //➊➋⊕⊙○●◆▼◎⊕▣∅●
+            cout << "+ "; //➊➋⊕⊙○●◆▼◎⊕▣∅●
          else if (_chessBoard[i][j] == DEFENDER)
-            cout << "⊙ ";
+            cout << "- ";
          else if (_chessBoard[i][j] == EMPTY)
-            cout << "∅ "; //❉✿❀❁✪❂
+            cout << ". "; //❉✿❀❁✪❂
       cout << endl;
    }
 }
@@ -122,6 +133,7 @@ Position ChessBoard::GetLastNode()
  *@param    y    The y index of the _chessBoard Matrix.
  *@param    who  ATTACKER / DEFENDER
  */
+//这一段是正确的
 void ChessBoard::Play(int x, int y, int who)
 {
    _chessBoard[x][y] = who;
@@ -131,6 +143,7 @@ void ChessBoard::Play(int x, int y, int who)
    //if (IsWin(_latestPosition))
    if (IsWin2(x, y))
    {
+      isFinished = true;
       if (_latestPosition._player == DEFENDER)
          cout << "DEFENDER WIN" << endl;
       else if(_latestPosition._player == ATTACKER)
@@ -150,8 +163,10 @@ void ChessBoard::Play(int x, int y, int who)
    for (int i = 0; i < 8; ++i)
    {
       Position now(x + DC[i], y + DR[i]);
-      if(1 <= now._x && now._x < SIZE && 1 <= now._y && now._y < SIZE && \
+      //if(1 <= now._x && now._x < SIZE && 1 <= now._y && now._y < SIZE && \
          _chessBoard[now._y][now._x] == EMPTY)
+      if(1 <= now._x && now._x < SIZE && 1 <= now._y && now._y < SIZE && \
+         _chessBoard[now._x][now._y] == EMPTY)
          _toJudge.push_back(now);
    }
    
@@ -164,6 +179,7 @@ void ChessBoard::Play(int x, int y, int who)
  *
  *@return   1 ~ SIZE-1: Finded / -1: does not Finded.
  */
+//这一段是正确的
 int ChessBoard::ToJudgeFind(Position p)
 {
    bool flag = false;
@@ -188,6 +204,7 @@ int ChessBoard::ToJudgeFind(Position p)
  *
  *@return   true: contain / false: do not Contain.
  */
+//这一段是正确的
 bool ChessBoard::ToJudgeContain(Position p)
 {
    int index = ToJudgeFind(p);
@@ -204,6 +221,7 @@ bool ChessBoard::ToJudgeContain(Position p)
  *
  *@return   true: delete / false: do not Delete.
  */
+//这一段是正确的
 bool ChessBoard::ToJudgeDelete(Position p)
 {
    if (_toJudge.empty())
@@ -299,6 +317,7 @@ bool ChessBoard::IsSame(int beginX, int beginY , int type, int lengthToCompare)
  *@param    p    The latsest played Position.
  *@return   true: yes, someone win / false: no, nobady Win.
  */
+//这一段有问题,直接舍弃
 bool ChessBoard::IsWin(Position p)
 {
 #ifdef  _DEBUG
@@ -339,6 +358,7 @@ bool ChessBoard::IsWin(Position p)
  *
  *@return   true: yes, someone win / false: no, nobady Win.
  */
+//这一段是正确的
 bool ChessBoard::IsWin2(int x,int y)
 {
    
@@ -347,24 +367,25 @@ bool ChessBoard::IsWin2(int x,int y)
 #endif
    
    //先保存这吧,可能会用到
-   bool isFinished = false;
+   
    // 判断一行是否五子连珠
    int cnt = 1;
    int col = y, row = x;
-   while(--col > 0 && _chessBoard[row][col]==_chessBoard[x][y])
+   while (--col > 0 && _chessBoard[row][col] == _chessBoard[x][y])
       ++cnt;
    col = y;
    row = x;
-   while(++col < SIZE && _chessBoard[row][col]==_chessBoard[x][y])
+   while (++col < SIZE && _chessBoard[row][col] == _chessBoard[x][y])
       ++cnt;
    
 #ifdef _DEBUG_MARK
    cout << "H: " << cnt << endl;
 #endif
    
-   if(cnt>=5)
+   if (cnt >= 5)
    {
-      isFinished=true;
+      //cout << "Win2: " << endl;
+      //isFinished = true;
       return true;
    }
    
@@ -372,21 +393,22 @@ bool ChessBoard::IsWin2(int x,int y)
    // 判断一列是否五子连珠
    col = y;
    row = x;
-   cnt=1;
-   while(--row > 0 && _chessBoard[row][col]==_chessBoard[x][y])
+   cnt = 1;
+   while (--row > 0 && _chessBoard[row][col] == _chessBoard[x][y])
       ++cnt;
    col = y;
    row = x;
-   while(++row < SIZE && _chessBoard[row][col]==_chessBoard[x][y])
+   while (++row < SIZE && _chessBoard[row][col] == _chessBoard[x][y])
       ++cnt;
    
 #ifdef _DEBUG_MARK
    cout << "V: " << cnt << endl;
 #endif
    
-   if(cnt>=5)
+   if (cnt >= 5)
    {
-      isFinished=true;
+      //cout << "Win2: " << endl;
+      //isFinished = true;
       return true;
    }
    
@@ -394,21 +416,22 @@ bool ChessBoard::IsWin2(int x,int y)
    // 判断左对角线是否五子连珠
    col = y;
    row = x;
-   cnt=1;
-   while(--col > 0 && --row > 0 && _chessBoard[row][col]==_chessBoard[x][y])
+   cnt = 1;
+   while (--col > 0 && --row > 0 && _chessBoard[row][col] == _chessBoard[x][y])
       ++cnt;
    col = y;
    row = x;
-   while(++col < SIZE && ++row < SIZE && _chessBoard[row][col]==_chessBoard[x][y])
+   while (++col < SIZE && ++row < SIZE && _chessBoard[row][col] == _chessBoard[x][y])
       ++cnt;
    
 #ifdef _DEBUG_MARK
    cout << "DR: " << cnt << endl;
 #endif
    
-   if(cnt>=5)
+   if (cnt >= 5)
    {
-      isFinished=true;
+      //cout << "Win2: " << endl;
+      //isFinished = true;
       return true;
    }
    
@@ -416,21 +439,22 @@ bool ChessBoard::IsWin2(int x,int y)
    // 判断右对角线是否五子连珠
    col = y;
    row = x;
-   cnt=1;
-   while(++row < SIZE && --col>0 && _chessBoard[row][col]==_chessBoard[x][y])
+   cnt = 1;
+   while (++row < SIZE && --col>0 && _chessBoard[row][col]==_chessBoard[x][y])
       ++cnt;
    col = y;
    row = x;
-   while(--row>0 && ++col < SIZE && _chessBoard[row][col]==_chessBoard[x][y])
+   while (--row>0 && ++col < SIZE && _chessBoard[row][col]==_chessBoard[x][y])
       ++cnt;
    
 #ifdef _DEBUG_MARK
    cout << "DL: " << cnt << endl;
 #endif
    
-   if(cnt>=5)
+   if (cnt >= 5)
    {
-      isFinished=true;
+      //cout << "Win2: " << endl;
+      //isFinished = true;
       return true;
    }
    
@@ -442,6 +466,8 @@ bool ChessBoard::IsWin2(int x,int y)
  *
  *@return   The mark this evaluation Got.
  */
+
+//这一段是正确的
 int ChessBoard::EvaluateChessBoard()
 {
    int res = 0;
@@ -579,17 +605,16 @@ int ChessBoard::EvaluateChessBoard()
  *@brief   Get the best Position.
  *
  *@param    deep    The Current search Deep.
- *@param    root    Root of the GameTree, the best Position.
  *@param    alpha   Alpha
  *@param    beta    Beta
  */
-void ChessBoard::GetBestPosition(int deep, Position root, int alpha, int beta, Position p)
+void ChessBoard::GetBestPosition(int deep, int alpha, int beta, Position p)
 {
    if (deep == SEARCH_DEEP)
    {
-      root._mark = EvaluateChessBoard();
+      _bestNode._mark = EvaluateChessBoard();
 #ifdef _DEBUG_BEST
-      cout << p._x << " " << p._y <<" " << root._mark << endl;
+      cout << p._x << " " << p._y <<" " << root->_mark << endl;
 #endif
       return;
    }
@@ -606,7 +631,7 @@ void ChessBoard::GetBestPosition(int deep, Position root, int alpha, int beta, P
       
       _node.push_back(now);
       
-      //确定是本来就有的，还是在DFS中，进行添加的（本来应该为空的位置）
+      //确定是本来就有的，还是在DFS中，进行添加的（本来应该为空的位置）, 这个函数是对的
       bool flag = ToJudgeContain(now);
       
       //(1)_chessBoard[now._y][now._x] = (( deep & 1 ) == 1 ) ? DEFENDER : ATTACKER;
@@ -616,10 +641,14 @@ void ChessBoard::GetBestPosition(int deep, Position root, int alpha, int beta, P
       //if (IsWin(Position(now._x, now._y)))
       if (IsWin2(now._x, now._y))
       {
-         root.SetXY(now._x, now._y);
-         root._mark = MAXN * _chessBoard[now._y][now._x];
+         _bestNode.SetXY(now._x, now._y);
+         //cout << "Win: " << _bestNode._x << " " << _bestNode._y << endl;
+         //root->_mark = MAXN * _chessBoard[now._y][now._x];
+         _bestNode._mark = MAXN * _chessBoard[now._x][now._y];
          //恢复原样,并结束
-         _chessBoard[now._y][now._x] = EMPTY;
+         //_chessBoard[now._y][now._x] = EMPTY;
+         //(1)
+         _chessBoard[now._x][now._y] = EMPTY;
          return;
       }
       
@@ -630,11 +659,14 @@ void ChessBoard::GetBestPosition(int deep, Position root, int alpha, int beta, P
       for (int i = 0; i < 8; ++i)
       {
          Position next(now._x + DC[i], now._y + DR[i]);
-         if(1 <= now._x + DC[i] && now._x + DC[i]  < SIZE && 1 <= now._y + DR[i] \
+         
+         //if(1 <= now._x + DC[i] && now._x + DC[i]  < SIZE && 1 <= now._y + DR[i] \
             && now._y + DR[i] < SIZE && _chessBoard[next._y][next._x] == EMPTY)
+         if(1 <= next._x && next._x < SIZE && 1 <= next._y \
+            && next._y < SIZE && _chessBoard[next._x][next._y] == EMPTY)
          {
             //再次进行扩展，合理，下次调用该函数便从给这里进行判断
-            if(ToJudgeContain(next))
+            if(!ToJudgeContain(next))
             {
                _toJudge.push_back(next);
             }
@@ -647,7 +679,7 @@ void ChessBoard::GetBestPosition(int deep, Position root, int alpha, int beta, P
       if(flag)
          ToJudgeDelete(now);
       
-      GetBestPosition(deep + 1, GetLastNode(), alpha, beta, now);
+      GetBestPosition(deep + 1, alpha, beta, now);
       
       //从下一轮回到了现在，再给它加上
       //(2)_chessBoard[now._y][now._x] = EMPTY;
@@ -665,33 +697,33 @@ void ChessBoard::GetBestPosition(int deep, Position root, int alpha, int beta, P
       // min层
       if ((deep & 1) == 1)
       {
-         if (_bestNode == nullptr || GetLastNode()._mark < _bestNode->_mark)
+         Position temp = GetLastNode();
+         if ( IsBestNodeNull() || temp._mark < _bestNode._mark)
          {
-            Position temp = GetLastNode();
-            _bestNode = &temp;
-            root._mark = _bestNode->_mark;
+            _bestNode.SetXY(temp._x, temp._y);
+            //root->_mark = _bestNode->_mark;
             //这个是为什么
-            if(root._mark <= MINN)
-               root._mark += deep;
-            beta = min(root._mark, beta);
+            if(_bestNode._mark <= MINN)
+               _bestNode._mark += deep;
+            beta = min(_bestNode._mark, beta);
          }
-         if(root._mark <= alpha)
+         if(_bestNode._mark <= alpha)
             return;
       }
       // max层
       else
       {
-         if(_bestNode == nullptr || GetLastNode()._mark > _bestNode->_mark)
+         Position temp = GetLastNode();
+         if(IsBestNodeNull() || temp._mark > _bestNode._mark)
          {
-            Position temp = GetLastNode();
-            _bestNode = &temp;
-            root._mark = _bestNode->_mark;
+            _bestNode.SetXY(temp._x, temp._y);
+            //root->_mark = _bestNode->_mark;
             //这个是为什么
-            if(root._mark == MAXN)
-               root._mark -= deep;
-            alpha = max(root._mark, alpha);
+            if(_bestNode._mark == MAXN)
+               _bestNode._mark -= deep;
+            alpha = max(_bestNode._mark, alpha);
          }
-         if(root._mark >= beta)
+         if(_bestNode._mark >= beta)
             return;
       }
    }
@@ -707,11 +739,21 @@ void ChessBoard::GetBestPosition(int deep, Position root, int alpha, int beta, P
  */
 void ChessBoard::AI()
 {
-   Position node;
    Position node1;
-   GetBestPosition(0, node, MINN, MAXN, node1);
-   cout << node._x << " " << node._y << endl;
-   Play(node._x, node._y, ATTACKER);
+   
+   GetBestPosition(0, MINN, MAXN, node1);
+   
+   /*
+   if (_bestNode._x == 5 && _bestNode._y == 6)
+   {
+      cout << endl;
+      Display2();
+      cout << endl;
+   }
+   */
+   
+   //cout << _bestNode._x << " " << _bestNode._y << endl;
+   Play(_bestNode._x, _bestNode._y, ATTACKER);
 }
 
 /*!
@@ -719,14 +761,12 @@ void ChessBoard::AI()
  */
 void ChessBoard::User()
 {
-   int x = _random.GenrandInt15();
-   int y = _random.GenrandInt15();
-   
-   while (_chessBoard[x][y] != EMPTY)
+   int x, y;
+   do
    {
       x = _random.GenrandInt15();
       y = _random.GenrandInt15();
-   }
-   
+   }while (_chessBoard[x][y] != EMPTY);
+   //cout << "User: " << x << " " << y << endl;
    Play(x, y, DEFENDER);
 }
