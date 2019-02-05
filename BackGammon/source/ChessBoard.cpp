@@ -101,9 +101,17 @@ void ChessBoard::Display()
  */
 void ChessBoard::Display2()
 {
+   // 打印一下行标
+   cout << "  ";
+   for (int i = 1; i < SIZE; i++)
+      cout << i << " ";
+   cout << endl;
+   
    //cout << "The contents of _chessBoard:" << endl;
    for (int i = 1; i < SIZE; i++)
    {
+      //打印一下列标
+      cout << i << " ";
       for (int j = 1; j < SIZE; j++)
          if (_chessBoard[i][j] == ATTACKER)
             cout << "+ "; //➊➋⊕⊙○●◆▼◎⊕▣∅●
@@ -137,6 +145,7 @@ Position ChessBoard::GetLastNode()
 void ChessBoard::Play(int x, int y, int who)
 {
    _chessBoard[x][y] = who;
+   //Display2();
    _latestPosition.SetXY(x, y);
    _latestPosition._player = who;
    
@@ -683,6 +692,7 @@ void ChessBoard::GetBestPosition(int deep, int alpha, int beta, Position p)
       
       //从下一轮回到了现在，再给它加上
       //(2)_chessBoard[now._y][now._x] = EMPTY;
+      //问题就出在这个地方
       _chessBoard[now._x][now._y] = EMPTY;
       
       if (flag)
@@ -740,9 +750,9 @@ void ChessBoard::GetBestPosition(int deep, int alpha, int beta, Position p)
 void ChessBoard::AI()
 {
    Position node1;
-   
+
    GetBestPosition(0, MINN, MAXN, node1);
-   
+
    /*
    if (_bestNode._x == 5 && _bestNode._y == 6)
    {
@@ -757,6 +767,19 @@ void ChessBoard::AI()
 }
 
 /*!
+ *@brief   Get the user's wanted positions.
+ */
+void ChessBoard::GetUserPosition(int &x ,int &y)
+{
+   do
+   {
+      cout << "Please input a Location(1<=x,y<=" << SIZE - 1 << "),like 4 5 ,:" << endl;
+      cin >> x >> y;
+   }
+   while (x < 1 || y < 1 || x >= SIZE || y >= SIZE);
+}
+
+/*!
  *@brief   The whole process of User to Play.
  */
 void ChessBoard::User()
@@ -764,9 +787,11 @@ void ChessBoard::User()
    int x, y;
    do
    {
-      x = _random.GenrandInt15();
-      y = _random.GenrandInt15();
+      //x = _random.GenrandInt15();
+      //y = _random.GenrandInt15();
+      GetUserPosition(x,y);
    }while (_chessBoard[x][y] != EMPTY);
+   
    //cout << "User: " << x << " " << y << endl;
    Play(x, y, DEFENDER);
 }

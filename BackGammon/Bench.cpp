@@ -34,9 +34,14 @@ int PlayChess()
 {
    int i = 1;
    ChessBoard C;
+   //20控制着计算机下棋的次数
+   //基本上在20步之内就能够获得胜利
+   cout << "The Initial state of Chessboard:" << endl;
+   C.Display2();
+   
    for (; i <= 20 && !C.isFinished; i++)
    {
-      //cout << endl << i << "th step: " << endl;
+      cout << endl << i << "th step: " << endl;
       C.User();
       
        /*if (i == 4)
@@ -48,12 +53,14 @@ int PlayChess()
        */
       C.AI();
       //cout << "The mark of ChessBoard: " << C.EvaluateChessBoard() << endl;
-      //C.Display2();
+      C.Display2();
+     // cout << endl;
       
    }
    return i;
 }
 
+//time控制着模拟的次数
 void Simulation(int time)
 {
    double sum = 0.0;
@@ -65,8 +72,10 @@ void Simulation(int time)
    
    for (int i = 0; i < time; i++)
       amount[i] = PlayChess();
+   
    cout << "win/total: " << WinTime() <<"/" << time << endl;
    cout << "The step needed:" << endl;
+   
    for (int i = 0; i < time; i++)
    {
       sum += amount[i];
@@ -74,12 +83,13 @@ void Simulation(int time)
       if ((i + 1) % 5 == 0)
          cout << endl;
    }
+   
    cout << "The average step is:" << sum / WinTime() << endl;
 }
 
 int main(void)
 {
-   Simulation(10);
+   Simulation(1);
    return 0;
 }
 

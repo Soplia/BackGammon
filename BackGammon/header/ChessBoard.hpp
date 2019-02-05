@@ -169,6 +169,10 @@ public:
     */
    void User();
 
+   /*!
+    *@brief   Get the user's wanted positions.
+    */
+   void GetUserPosition(int &x ,int &y);
    
 public:
    /*!

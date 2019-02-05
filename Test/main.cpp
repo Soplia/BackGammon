@@ -1,34 +1,31 @@
-//
-//  main.cpp
-//  Test
-//
-//  Created by QM on 2019/1/2.
-//  Copyright © 2019 QM. All rights reserved.
-//
-
 #include <iostream>
-#include <vector>
 using namespace std;
+
+unsigned int x = 123456789,
+y = 362436000,
+z = 521288629,
+c = 7654321; /* Seed variables */
+
+unsigned int KISS()
+{
+   unsigned long long t, A = 698769069ULL;
+   
+   x = 69069 * x + 12345;
+   
+   y ^= (y << 13);
+   y ^= (y >> 17);
+   y ^= (y << 5);
+   
+   t = (A * z + c);
+   c = (t >> 32);
+   z = t;
+   
+   return x + y + z;
+}
 
 int main(void)
 {
-   vector<int> a;
-   for (int i = 0; i < 5; i++)
-      a.push_back(i+10);
-   //cout << a.back() << endl;
-   
-
-   
-   long count = a.size();
-   for (int i = 0; i < count;i++)
-   {
-      cout << i << endl;
-      cout << a[i] << endl;
-   }
-   
-   vector<int>::iterator it = find(a.begin(), a.end(), 1);
-   cout << *it << endl;
-   
-
+   for (int i = 0; i < 10; i++)
+      cout << KISS() << endl;
    return 0;
 }
