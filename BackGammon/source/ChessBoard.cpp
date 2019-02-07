@@ -145,7 +145,6 @@ Position ChessBoard::GetLastNode()
 void ChessBoard::Play(int x, int y, int who)
 {
    _chessBoard[x][y] = who;
-   //Display2();
    _latestPosition.SetXY(x, y);
    _latestPosition._player = who;
    
@@ -157,28 +156,27 @@ void ChessBoard::Play(int x, int y, int who)
          cout << "DEFENDER WIN" << endl;
       else if(_latestPosition._player == ATTACKER)
          cout << "ATTACKER WIN" << endl;
-      
       //Init(0);
    }
-   
-   // 以下为自己补充
-   Position p(x, y);
-   
-   //如果已经下了就移除
-   if (ToJudgeContain(p))
-      ToJudgeDelete(p);
-   //不管是谁下的都把它周围八个方向未下的位置作为代下点
-   
-   for (int i = 0; i < 8; ++i)
+   else
    {
-      Position now(x + DC[i], y + DR[i]);
-      //if(1 <= now._x && now._x < SIZE && 1 <= now._y && now._y < SIZE && \
+      Position p(x, y);
+      
+      //如果已经下了就移除
+      if (ToJudgeContain(p))
+         ToJudgeDelete(p);
+      
+      //不管是谁下的都把它周围八个方向未下的位置作为代下点
+      for (int i = 0; i < 8; ++i)
+      {
+         Position now(x + DC[i], y + DR[i]);
+         //if(1 <= now._x && now._x < SIZE && 1 <= now._y && now._y < SIZE && \
          _chessBoard[now._y][now._x] == EMPTY)
-      if(1 <= now._x && now._x < SIZE && 1 <= now._y && now._y < SIZE && \
-         _chessBoard[now._x][now._y] == EMPTY)
-         _toJudge.push_back(now);
+         if (1 <= now._x && now._x < SIZE && 1 <= now._y && now._y < SIZE && \
+            _chessBoard[now._x][now._y] == EMPTY)
+            _toJudge.push_back(now);
+      }
    }
-   
 }
 
 /*!
@@ -644,6 +642,7 @@ void ChessBoard::GetBestPosition(int deep, int alpha, int beta, Position p)
       bool flag = ToJudgeContain(now);
       
       //(1)_chessBoard[now._y][now._x] = (( deep & 1 ) == 1 ) ? DEFENDER : ATTACKER;
+      
       _chessBoard[now._x][now._y] = (( deep & 1 ) == 1 ) ? DEFENDER : ATTACKER;
       
       //下完之后，立马进行判断
@@ -679,7 +678,7 @@ void ChessBoard::GetBestPosition(int deep, int alpha, int beta, Position p)
             {
                _toJudge.push_back(next);
             }
-            //如果本来就有则标记为假
+            //如果本来就有被包含在_toJudge中则标记为假
             else
                flags[i]=false;
          }
@@ -705,6 +704,7 @@ void ChessBoard::GetBestPosition(int deep, int alpha, int beta, Position p)
       
       // alpha beta剪枝
       // min层
+      cout << deep << "The size of _node is:" << _node.size() << endl;
       if ((deep & 1) == 1)
       {
          Position temp = GetLastNode();
