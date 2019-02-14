@@ -28,15 +28,17 @@ class Node
 {
 public:
    Node();
-   Node(Position p);
-   void SetPosition(Position p);
-   void AddChild(Position p);
-   Position GetLastChild();
-   bool IsBestNodeNull();
+   Node(const Node &other);
+   Node & operator = (const Node &other);
+   void SetPoint(Position p);
+   void AddChild(Node *r);
+   Node *GetLastChild();
    
 public:
-   Position _self;
-   Position _bestChild;
-   vector<Position> _childList;
+   Node *_bestChild;
+   vector<Node*> *_child;
+   Position _point;
+   int _mark;
+   
 };
 #endif /* Node_h */

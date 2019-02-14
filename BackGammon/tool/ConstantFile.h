@@ -43,7 +43,7 @@ const int MINN = -MAXN;
 /*!
  *@brief   The size of the Chessboard.
  */
-const int SIZE = 8;
+const int SIZE = 16;
 
 /*!
  *@brief   Represent the Offset (5-1).

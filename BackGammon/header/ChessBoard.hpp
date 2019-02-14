@@ -12,9 +12,8 @@
     COMPLIER: Xcode - Version 9.0 beta 3.
     Copyright © 2018 QM. All rights reserved.
  */
-
-
 #pragma once
+
 #include "Position.hpp"
 #include "ConstantFile.h"
 #include "MTRandom.hpp"
@@ -78,8 +77,7 @@ public:
     *@return   true: yes, someone win / false: no, nobady Win.
     */
    bool IsWin2(int x, int y);
-
-
+   
    /*!
     *@brief   Whether the "lengthToCompare" positions are played by the same User?
     *
@@ -106,7 +104,7 @@ public:
     *@param    alpha   Alpha
     *@param    beta    Beta
     */
-   void GetBestPosition(int deep, int alpha, int beta, Node root);
+   void GetBestPosition(int deep, int alpha, int beta, Node &root);
 
    /*!
     *@brief   Get the last node from _node.
@@ -141,6 +139,11 @@ public:
     *@return   true: delete / false: do not Delete.
     */
    bool ToJudgeDelete(Position p);
+   
+   /*!
+    *@brief   Display the _toJudge was used for debug.
+    */
+   void DisplayToJudge();
    
    /*!
     *@brief   Is the best node null or Not.
