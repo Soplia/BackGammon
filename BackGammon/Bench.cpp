@@ -84,7 +84,7 @@ void Simulation(int time)
          cout << endl;
    }
    
-   cout << "The average step is:" << sum / WinTime() << endl;
+   cout << endl << "The average step is:" << sum / WinTime() << endl;
 }
 
 int main(void)

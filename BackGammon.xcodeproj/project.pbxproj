@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3398A2FF220C825E007D2011 /* Node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3398A2FD220C825E007D2011 /* Node.cpp */; };
 		950C570921D90E8C00BFB1B1 /* Bench.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 950C570821D90E8C00BFB1B1 /* Bench.cpp */; };
 		950C570C21D9135A00BFB1B1 /* ChessBoard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 950C570A21D9135A00BFB1B1 /* ChessBoard.cpp */; };
 		950C570F21D9138B00BFB1B1 /* Position.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 950C570D21D9138B00BFB1B1 /* Position.cpp */; };
@@ -36,6 +37,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3398A2FD220C825E007D2011 /* Node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Node.cpp; sourceTree = "<group>"; };
+		3398A2FE220C825E007D2011 /* Node.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Node.hpp; sourceTree = "<group>"; };
 		950C56FB21D90D1200BFB1B1 /* BackGammon */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = BackGammon; sourceTree = BUILT_PRODUCTS_DIR; };
 		950C570821D90E8C00BFB1B1 /* Bench.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Bench.cpp; sourceTree = "<group>"; };
 		950C570A21D9135A00BFB1B1 /* ChessBoard.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ChessBoard.cpp; sourceTree = "<group>"; };
@@ -102,6 +105,7 @@
 				950C570A21D9135A00BFB1B1 /* ChessBoard.cpp */,
 				950C570D21D9138B00BFB1B1 /* Position.cpp */,
 				957E419921DCFA44001C6BED /* MTRandom.cpp */,
+				3398A2FD220C825E007D2011 /* Node.cpp */,
 			);
 			path = source;
 			sourceTree = "<group>";
@@ -109,6 +113,7 @@
 		950C570621D90E5000BFB1B1 /* header */ = {
 			isa = PBXGroup;
 			children = (
+				3398A2FE220C825E007D2011 /* Node.hpp */,
 				957E419A21DCFA44001C6BED /* MTRandom.hpp */,
 				950C570B21D9135A00BFB1B1 /* ChessBoard.hpp */,
 				950C570E21D9138B00BFB1B1 /* Position.hpp */,
@@ -213,6 +218,7 @@
 				950C570C21D9135A00BFB1B1 /* ChessBoard.cpp in Sources */,
 				950C570F21D9138B00BFB1B1 /* Position.cpp in Sources */,
 				957E419B21DCFA44001C6BED /* MTRandom.cpp in Sources */,
+				3398A2FF220C825E007D2011 /* Node.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

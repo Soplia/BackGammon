@@ -18,6 +18,7 @@
 #include "Position.hpp"
 #include "ConstantFile.h"
 #include "MTRandom.hpp"
+#include "Node.hpp"
 #include <iostream>
 #include <vector>
 #include <cmath>
@@ -41,11 +42,6 @@ public:
     *@param    x    The value assigned to the _chessBoard.
     */
    void Init(int x);
-
-   /*!
-    *@brief   Display the _chessBoard Matrix.
-    */
-   void Display();
 
    /*!
     *@brief   Display the _chessBoard matrix with symbols.
@@ -73,13 +69,6 @@ public:
     */
    void Play(int x, int y, int who);
 
-   /*!
-    *@brief   Whether win or Not.
-    *@param    p    The latsest played Position.
-    *@return   true: yes, someone win / false: no, nobady Win.
-    */
-   bool IsWin(Position p);
-   
    /*!
     *@brief   Whether win or Not.
     *
@@ -117,7 +106,7 @@ public:
     *@param    alpha   Alpha
     *@param    beta    Beta
     */
-   void GetBestPosition(int deep, int alpha, int beta, Position p);
+   void GetBestPosition(int deep, int alpha, int beta, Node root);
 
    /*!
     *@brief   Get the last node from _node.
