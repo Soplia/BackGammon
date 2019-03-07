@@ -14,6 +14,7 @@
  */
 
 #include <cstdlib>
+#include <fstream>
 #include "Position.hpp"
 #include "ChessBoard.hpp"
 #include "Point.hpp"
@@ -23,6 +24,7 @@ const int sizeOfCol = 300;
 int amount[size] = {0};
 double usedTime[size] = {0.0};
 Point randSteps[size][sizeOfCol];
+ofstream out;
 
 void InitRandSteps()
 {
@@ -31,7 +33,16 @@ void InitRandSteps()
    for (int i = 0; i < size; i++)
       for (int j = 0; j < sizeOfCol; j++)
       {
-         Point p(myRand.GenrandInt15(), myRand.GenrandInt15());
+         int x = myRand.GenrandInt15();
+         int y = myRand.GenrandInt15();
+         Point p(x,y);
+         
+         if (x < 1 || x >15)
+            cout << i << "-" << j << "-" << x << endl;
+         if (y < 1 || y >15)
+            cout << i << "-" << j << "-" << y << endl;
+         
+         
          randSteps[i][j] = p;
       }
 }
@@ -60,8 +71,8 @@ int PlayChess(double &time, int mode, int row)
    double sumOfTime = 0.0;
    ChessBoard C;
    
-   cout << "The Initial state of Chessboard:" << endl;
-   C.Display2();
+   //cout << "The Initial state of Chessboard:" << endl;
+   //C.Display2();
    
    //sizeOfCol / 5 控制着计算机下棋的次数
    //基本上在 sizeOfCol / 5 步之内就能够获得胜利
@@ -90,8 +101,10 @@ int PlayChess(double &time, int mode, int row)
                temp = randSteps[row][j];
                flag = C.ChessExist(temp.GetX(), temp.GetY());
                j++;
-            }while(flag);
+            }while(flag && j < sizeOfCol);
+            
             //cout << "(" << temp.GetX() << "," << temp.GetY() << ")" << endl;
+            
             C.User(temp.GetX(), temp.GetY());
             double temp1 = C.WithAI();
             sumOfTime += temp1;
@@ -107,8 +120,10 @@ int PlayChess(double &time, int mode, int row)
                temp = randSteps[row][j];
                flag = C.ChessExist(temp.GetX(), temp.GetY());
                j++;
-            }while(flag);
+            }while(flag && j < sizeOfCol);
+            
             //cout << "(" << temp.GetX() << "," << temp.GetY() << ")" << endl;
+            
             C.User(temp.GetX(), temp.GetY());
             
             double temp1 = C.WithoutAI();
@@ -151,31 +166,62 @@ void Simulation(int time, int mode)
    
    InitRandSteps();
    
+   out.open("/Users/qingmang/JrX_Code/Xcode/BackGammon/Data.txt", ios::out | ios::app);
+   if (!out)
+   {
+      cout << "Create File Fail" << endl;
+      exit(0);
+   }
+   switch (mode)
+   {
+      case AI_RAND:
+         out << "AI_RAND_" << time << endl;
+         break;
+      case AI_NOTRAND:
+         out << "AI_NOTRAND" << endl;
+         break;
+      case NOTAI_RAND:
+         out << "NOTAI_RAND_" << time << endl;
+         break;
+      case NOTAI_NOTRAND:
+         out << "NOTAI_NOTRAND" << endl;
+         break;
+      default:
+         break;
+   }
+   
    //进行time次仿真
    for (int i = 0; i < time; i++)
    {
       amount[i] = PlayChess(timePer, mode, i);
       usedTime[i] = timePer;
+      out << i + 1 << "," << amount[i] << "," << usedTime[i] << endl;
    }
+   out.close();
    
-   cout << "win/total: " << WinTime() <<"/" << time << endl;
-   cout << "The step needed:" << endl;
+   cout << endl << "win/total: " << WinTime() <<"/" << time << endl;
    
+   //cout << "The step needed:" << endl;
    for (int i = 0; i < time; i++)
    {
       stepSum += amount[i];
       timeSum += usedTime[i];
-      cout << usedTime[i] << " ";
-      if ((i + 1) % 5 == 0)
-         cout << endl;
+      //cout << usedTime[i] << " ";
+      //if ((i + 1) % 5 == 0)
+         //cout << endl;
    }
-   
-   cout << endl << "Average step:" << stepSum / WinTime();
+   cout << "Average step:" << stepSum / WinTime();
    cout << endl << "Average time:" << timeSum / time << endl;
 }
 
 int main(void)
 {
-   Simulation(30, NOTAI_RAND);
+   //Simulation(10, NOTAI_RAND);
+   //Simulation(100, NOTAI_RAND);
+   //Simulation(1000, NOTAI_RAND);
+   //Simulation(10, AI_RAND);
+   Simulation(100, AI_RAND);
+   //Simulation(1000, AI_RAND);
+   
    return 0;
 }
