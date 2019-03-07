@@ -85,6 +85,10 @@ const int DIAGONAL2R = 3;
  */
 const int DIAGONAL2L = 4;
 
+const int AI_NOTRAND = 1;
+const int AI_RAND = 2;
+const int NOTAI_NOTRAND = 3;
+const int NOTAI_RAND = 4;
 /*************************************************************************************/
 #define N 624
 #define M 397

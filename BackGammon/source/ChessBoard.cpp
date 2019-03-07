@@ -727,8 +727,9 @@ void ChessBoard::GetBestPosition(int deep, int alpha, int beta, Node &root)
  */
 bool ChessBoard::ChessExist(int i, int j)
 {
-   if (_chessBoard[i][j] == ATTACKER || _chessBoard[i][j] == DEFENDER)
-      return true;
+   if (i >=1 && i < SIZE && j >=1 && j < SIZE)
+      if (_chessBoard[i][j] == ATTACKER || _chessBoard[i][j] == DEFENDER)
+         return true;
    return false;
 }
 
@@ -775,9 +776,7 @@ int ChessBoard::CheckMax(int x, int y, int attacker_defender)
    x_temp1 = x_temp;
    y_temp1 = y_temp;
    num = 0;
-   for (
-        
-        int i = 1; i < 5; i++)
+   for ( int i = 1; i < 5; i++)
    {
       y_temp1 -= 1;
       if (y_temp1 < 0)
@@ -909,13 +908,12 @@ void ChessBoard::ComputerDo(int &row, int &col)
 double ChessBoard::WithAI()
 {
    Node root;
-   auto startTime = std::chrono::high_resolution_clock::now();
    
+   auto startTime = std::chrono::high_resolution_clock::now();
    GetBestPosition(0, MINN, MAXN, root);
    auto endTime = std::chrono::high_resolution_clock::now();
    
    Play(root._bestChild -> _point._x, root._bestChild -> _point._y, ATTACKER);
-   
    return  std::chrono::duration<double, std::milli>(endTime - startTime).count();
 }
 
@@ -927,14 +925,13 @@ double ChessBoard::WithAI()
 double ChessBoard::WithoutAI()
 {
    int x, y;
+   
    auto startTime = std::chrono::high_resolution_clock::now();
    ComputerDo(x, y);
-   
    auto endTime = std::chrono::high_resolution_clock::now();
    
    Play(x, y, ATTACKER);
    return  std::chrono::duration<double, std::milli>(endTime - startTime).count();
-   
 }
 
 /*!
@@ -957,17 +954,13 @@ void ChessBoard::GetUserPosition(int &x ,int &y)
 void ChessBoard::User()
 {
    int x, y;
-   //随机的开关
-   //_random.InitGenrand((unsigned long)time(NULL));
    do
    {
-      //x = _random.GenrandInt15();
-      //y = _random.GenrandInt15();
       GetUserPosition(x,y);
       
    }while (_chessBoard[x][y] != EMPTY);
    
-   cout << "User: " << x << " " << y << endl;
+   //cout << "User: " << x << " " << y << endl;
    Play(x, y, DEFENDER);
 }
 
