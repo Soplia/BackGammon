@@ -28,7 +28,7 @@ const int DC[] = {1,-1,-1,1,-1,1,0,0};
 /*!
  *@brief   Represent the search Deep.
  */
-const int SEARCH_DEEP = 6;
+const int SEARCH_DEEP = 4;
 
 /*!
  *@brief   Represent the max value in this Project.

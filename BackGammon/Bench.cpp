@@ -37,11 +37,12 @@ void InitRandSteps()
          int y = myRand.GenrandInt15();
          Point p(x,y);
          
+         /*
          if (x < 1 || x >15)
             cout << i << "-" << j << "-" << x << endl;
          if (y < 1 || y >15)
             cout << i << "-" << j << "-" << y << endl;
-         
+         */
          
          randSteps[i][j] = p;
       }
@@ -71,8 +72,8 @@ int PlayChess(double &time, int mode, int row)
    double sumOfTime = 0.0;
    ChessBoard C;
    
-   //cout << "The Initial state of Chessboard:" << endl;
-   //C.Display2();
+   cout << "The Initial state of Chessboard:" << endl;
+   C.Display2();
    
    //sizeOfCol / 5 控制着计算机下棋的次数
    //基本上在 sizeOfCol / 5 步之内就能够获得胜利
@@ -220,7 +221,7 @@ int main(void)
    //Simulation(100, NOTAI_RAND);
    //Simulation(1000, NOTAI_RAND);
    //Simulation(10, AI_RAND);
-   Simulation(100, AI_RAND);
+   Simulation(1, AI_NOTRAND);
    //Simulation(1000, AI_RAND);
    
    return 0;
