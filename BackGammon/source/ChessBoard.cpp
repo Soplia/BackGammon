@@ -719,15 +719,209 @@ void ChessBoard::GetBestPosition(int deep, int alpha, int beta, Node &root)
 }
 
 /*!
- *@brief   The whole process of AI to Play.
+ *@brief   Whether has been played or Not
+ *
+ *@param    i    The index of X
+ *@param    j    The index of Y
+ *
+ *@return   true: has been played; false: has not been Played.
  */
-void ChessBoard::AI()
+bool ChessBoard::ChessExist(int i, int j)
+{
+   if (_chessBoard[i][j] == ATTACKER || _chessBoard[i][j] == DEFENDER)
+      return true;
+   return false;
+}
+
+/*!
+ *@brief   Calculate the value of position with the same Type.
+ *
+ *@param    x    The start position of X
+ *@param    y    The start position of Y
+ *@param    attacker_defender    The type which is going to be Judged
+ *
+ *@return   The number of the psotion with the same Type.
+ */
+int ChessBoard::CheckMax(int x, int y, int attacker_defender)
+{
+   int num = 0, max_num, max_temp = 0;
+   int x_temp = x, y_temp = y;
+   int x_temp1 = x_temp, y_temp1 = y_temp; // judge right
+   for (int i = 1; i < 5; i++)
+   {
+      x_temp1 += 1;
+      if (x_temp1 >= SIZE)
+         break;
+      
+      if (_chessBoard[x_temp1][y_temp1] == attacker_defender)
+         num++;
+      else
+         break;
+   }
+   // judge left
+   x_temp1 = x_temp;
+   for (int i = 1; i < 5; i++)
+   {
+      x_temp1 -= 1;
+      if (x_temp1 < 0)
+         break;
+      if (_chessBoard[x_temp1][y_temp1] == attacker_defender)
+         num++;
+      else
+         break;
+   }
+   if (num < 5)
+      max_temp = num;
+   // judge up
+   x_temp1 = x_temp;
+   y_temp1 = y_temp;
+   num = 0;
+   for (
+        
+        int i = 1; i < 5; i++)
+   {
+      y_temp1 -= 1;
+      if (y_temp1 < 0)
+         break;
+      if (_chessBoard[x_temp1][y_temp1] == attacker_defender)
+         num++;
+      else
+         break;
+   }
+   // judge down
+   y_temp1 = y_temp;
+   for (int i = 1; i < 5; i++)
+   {
+      y_temp1 += 1;
+      if (y_temp1 >= SIZE)
+         break;
+      if (_chessBoard[x_temp1][y_temp1] == attacker_defender)
+         num++;
+      else
+         break;
+   }
+   if (num > max_temp && num < 5)
+      
+      max_temp = num;
+   // judge left_up
+   x_temp1 = x_temp;
+   y_temp1 = y_temp;
+   num = 0;
+   for (int i = 1; i < 5; i++)
+   {
+      x_temp1 -= 1;
+      y_temp1 -= 1;
+      if (y_temp1 < 0 || x_temp1 < 0)
+         break;
+      if (_chessBoard[x_temp1][y_temp1] == attacker_defender)
+         num++;
+      else
+         break;
+   }
+   // judge right_down
+   x_temp1 = x_temp;
+   y_temp1 = y_temp;
+   for (int i = 1; i < 5; i++)
+   {
+      x_temp1 += 1;
+      y_temp1 += 1;
+      if (y_temp1 >= SIZE || x_temp1 >= SIZE)
+         break;
+      if (_chessBoard[x_temp1][y_temp1] == attacker_defender)
+         num++;
+      else
+         break;
+   }
+   if (num > max_temp && num < 5)
+      max_temp = num;
+   // judge right_up
+   x_temp1 = x_temp;
+   y_temp1 = y_temp;
+   num = 0;
+   for (int i = 1; i < 5; i++)
+   {
+      x_temp1 += 1;
+      y_temp1 -= 1;
+      if (y_temp1 < 0 || x_temp1 >= SIZE)
+         break;
+      if (_chessBoard[x_temp1][y_temp1] == attacker_defender)
+         num++;
+      else
+         
+         break;
+   }
+   // judge left_down
+   x_temp1 = x_temp;
+   y_temp1 = y_temp;
+   for (int i = 1; i < 5; i++)
+   {
+      x_temp1 -= 1;
+      y_temp1 += 1;
+      if (y_temp1 >= SIZE || x_temp1 < 0)
+         break;
+      if (_chessBoard[x_temp1][y_temp1] == attacker_defender)
+         num++;
+      else
+         break;
+   }
+   if (num > max_temp && num < 5)
+      max_temp = num;
+   max_num = max_temp;
+   return max_num;
+}
+
+/*!
+ *@brief   Use the exhaustive method to determine the maximum number of pieces in each of the four directions of the coordinate point
+ *
+ *@param    row    The best position of X
+ *@param    col    The best position of Y
+ */
+void ChessBoard::ComputerDo(int &row, int &col)
+{
+   int max_a, max_d, max_temp, max = 0;
+   
+   for (int i = 0; i < SIZE; i++)
+   {
+      for (int j = 0; j < SIZE; j++)
+      {
+         if (!ChessExist(i, j))
+         {// 算法判断是否下子
+            max_a = CheckMax(i, j, ATTACKER);// 判断白子的最大值
+            max_d = CheckMax(i, j, DEFENDER);//判断黑子的最大值
+            //攻守兼备
+            max_temp= max_a > max_d ? max_a : max_d;
+            
+            if (max_temp > max)
+            {
+               max = max_temp;
+               row = i;
+               col = j;
+            }
+         }
+      }
+   }
+}
+
+/*!
+ *@brief   The whole process of WithAI to Play.
+ */
+void ChessBoard::WithAI()
 {
    Node root;
    
    GetBestPosition(0, MINN, MAXN, root);
    
    Play(root._bestChild -> _point._x, root._bestChild -> _point._y, ATTACKER);
+}
+
+/*!
+ *@brief   The whole process of WithoutAI to Play.
+ */
+void ChessBoard::WithoutAI()
+{
+   int x, y;
+   ComputerDo(x, y);
+   Play(x, y, ATTACKER);
 }
 
 /*!

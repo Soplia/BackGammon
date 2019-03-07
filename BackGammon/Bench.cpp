@@ -51,11 +51,10 @@ int PlayChess()
           cout << endl;
        }
        */
-      C.AI();
+      C.WithoutAI();
       //cout << "The mark of ChessBoard: " << C.EvaluateChessBoard() << endl;
       C.Display2();
      // cout << endl;
-      
    }
    return i;
 }

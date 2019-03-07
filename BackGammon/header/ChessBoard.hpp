@@ -152,9 +152,14 @@ public:
    bool IsBestNodeNull();
    
    /*!
-    *@brief   The whole process of AI to Play.
+    *@brief   The whole process of WithAI to Play.
     */
-   void AI();
+   void WithAI();
+   
+   /*!
+    *@brief   The whole process of WithoutAI to Play.
+    */
+   void WithoutAI();
 
    /*!
     *@brief   The whole process of User to Play.
@@ -165,6 +170,36 @@ public:
     *@brief   Get the user's wanted positions.
     */
    void GetUserPosition(int &x ,int &y);
+   
+   /*!
+    *@brief   Whether has been played or Not
+    *
+    *@param    i    The index of X
+    *@param    j    The index of Y
+    *
+    *@return   true: has been played; false: has not been Played.
+    */
+   bool ChessExist(int i, int j);
+
+   /*!
+    *@brief   Calculate the value of position with the same Type.
+    *
+    *@param    x    The start position of X
+    *@param    y    The start position of Y
+    *@param    attacker_defender    The type which is going to be Judged
+    *
+    *@return   The number of the psotion with the same Type.
+    */
+   int CheckMax(int x, int y, int attacker_defender);
+
+   /*!
+    *@brief   Use the exhaustive method to determine the maximum number of pieces in each of the four directions of the coordinate point
+    *
+    *@param    row    The best position of X
+    *@param    col    The best position of Y
+    */
+   void ComputerDo(int &row, int &col);
+
    
 public:
    /*!
