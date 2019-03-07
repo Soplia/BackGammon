@@ -172,6 +172,14 @@ public:
    void User();
 
    /*!
+    *@brief   The whole process of User to Play.
+    *
+    *@param    x    The X index to be Played
+    *@param    y    The Y index to be Played
+    */
+   void User(int x, int y);
+
+   /*!
     *@brief   Get the user's wanted positions.
     */
    void GetUserPosition(int &x ,int &y);

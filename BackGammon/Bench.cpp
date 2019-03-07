@@ -35,17 +35,17 @@ int PlayChess(double &time)
    int i = 1;
    ChessBoard C;
    
-   cout << "The Initial state of Chessboard:" << endl;
+   //cout << "The Initial state of Chessboard:" << endl;
    C.Display2();
    
    //20控制着计算机下棋的次数
    //基本上在20步之内就能够获得胜利
    for (; i <= 20 && !C.isFinished; i++)
    {
-      cout << endl << i << "th step: " << endl;
+      //cout << endl << i << "th step: " << endl;
       C.User();
       time = C.WithoutAI();
-      C.Display2();
+      //C.Display2();
    }
    return i;
 }

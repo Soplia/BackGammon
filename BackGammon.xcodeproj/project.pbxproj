@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		333F0F9822310BAE004EC486 /* Point.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 333F0F9622310BAE004EC486 /* Point.cpp */; };
 		3398A2FF220C825E007D2011 /* Node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3398A2FD220C825E007D2011 /* Node.cpp */; };
 		3398A31B22155EA2007D2011 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3398A31A22155EA2007D2011 /* main.cpp */; };
 		950C570921D90E8C00BFB1B1 /* Bench.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 950C570821D90E8C00BFB1B1 /* Bench.cpp */; };
@@ -47,6 +48,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		333F0F9622310BAE004EC486 /* Point.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Point.cpp; sourceTree = "<group>"; };
+		333F0F9722310BAE004EC486 /* Point.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Point.hpp; sourceTree = "<group>"; };
 		3398A2FD220C825E007D2011 /* Node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Node.cpp; sourceTree = "<group>"; };
 		3398A2FE220C825E007D2011 /* Node.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Node.hpp; sourceTree = "<group>"; };
 		3398A31822155EA2007D2011 /* Test1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Test1; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -135,6 +138,7 @@
 				950C570D21D9138B00BFB1B1 /* Position.cpp */,
 				957E419921DCFA44001C6BED /* MTRandom.cpp */,
 				3398A2FD220C825E007D2011 /* Node.cpp */,
+				333F0F9622310BAE004EC486 /* Point.cpp */,
 			);
 			path = source;
 			sourceTree = "<group>";
@@ -142,6 +146,7 @@
 		950C570621D90E5000BFB1B1 /* header */ = {
 			isa = PBXGroup;
 			children = (
+				333F0F9722310BAE004EC486 /* Point.hpp */,
 				3398A2FE220C825E007D2011 /* Node.hpp */,
 				957E419A21DCFA44001C6BED /* MTRandom.hpp */,
 				950C570B21D9135A00BFB1B1 /* ChessBoard.hpp */,
@@ -272,6 +277,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				333F0F9822310BAE004EC486 /* Point.cpp in Sources */,
 				950C570921D90E8C00BFB1B1 /* Bench.cpp in Sources */,
 				950C570C21D9135A00BFB1B1 /* ChessBoard.cpp in Sources */,
 				950C570F21D9138B00BFB1B1 /* Position.cpp in Sources */,

@@ -70,8 +70,7 @@ void ChessBoard::Init(int x)
    
    isFinished = false;
    
-   //随机的开关
-   _random.InitGenrand((unsigned long)time(NULL));
+   
 }
 
 /*!
@@ -880,9 +879,9 @@ void ChessBoard::ComputerDo(int &row, int &col)
 {
    int max_a, max_d, max_temp, max = 0;
    
-   for (int i = 0; i < SIZE; i++)
+   for (int i = 1; i < SIZE; i++)
    {
-      for (int j = 0; j < SIZE; j++)
+      for (int j = 1; j < SIZE; j++)
       {
          if (!ChessExist(i, j))
          {// 算法判断是否下子
@@ -913,11 +912,11 @@ double ChessBoard::WithAI()
    auto startTime = std::chrono::high_resolution_clock::now();
    
    GetBestPosition(0, MINN, MAXN, root);
+   auto endTime = std::chrono::high_resolution_clock::now();
    
    Play(root._bestChild -> _point._x, root._bestChild -> _point._y, ATTACKER);
    
-   auto endTime = std::chrono::high_resolution_clock::now();
-   return  std::chrono::duration<float, std::milli>(endTime - startTime).count();
+   return  std::chrono::duration<double, std::milli>(endTime - startTime).count();
 }
 
 /*!
@@ -930,9 +929,12 @@ double ChessBoard::WithoutAI()
    int x, y;
    auto startTime = std::chrono::high_resolution_clock::now();
    ComputerDo(x, y);
-   Play(x, y, ATTACKER);
+   
    auto endTime = std::chrono::high_resolution_clock::now();
-   return  std::chrono::duration<float, std::milli>(endTime - startTime).count();
+   
+   Play(x, y, ATTACKER);
+   return  std::chrono::duration<double, std::milli>(endTime - startTime).count();
+   
 }
 
 /*!
@@ -955,14 +957,28 @@ void ChessBoard::GetUserPosition(int &x ,int &y)
 void ChessBoard::User()
 {
    int x, y;
+   //随机的开关
+   //_random.InitGenrand((unsigned long)time(NULL));
    do
    {
-      x = _random.GenrandInt15();
-      y = _random.GenrandInt15();
-      //GetUserPosition(x,y);
+      //x = _random.GenrandInt15();
+      //y = _random.GenrandInt15();
+      GetUserPosition(x,y);
       
    }while (_chessBoard[x][y] != EMPTY);
    
-   //cout << "User: " << x << " " << y << endl;
+   cout << "User: " << x << " " << y << endl;
    Play(x, y, DEFENDER);
 }
+
+/*!
+ *@brief   The whole process of User to Play.
+ *
+ *@param    x    The X index to be Played
+ *@param    y    The Y index to be Played
+ */
+void ChessBoard::User(int x, int y)
+{
+   Play(x, y, DEFENDER);
+}
+
