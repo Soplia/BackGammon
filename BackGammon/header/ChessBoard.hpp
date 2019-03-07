@@ -21,6 +21,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <chrono>
 using namespace std;
 
 /*!
@@ -153,13 +154,17 @@ public:
    
    /*!
     *@brief   The whole process of WithAI to Play.
+    *
+    *@return   The time used to make a Decision.
     */
-   void WithAI();
+   double WithAI();
    
    /*!
     *@brief   The whole process of WithoutAI to Play.
+    *
+    *@return   The time used to make a Decision.
     */
-   void WithoutAI();
+   double WithoutAI();
 
    /*!
     *@brief   The whole process of User to Play.

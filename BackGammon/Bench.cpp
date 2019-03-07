@@ -17,9 +17,9 @@
 #include "Position.hpp"
 #include "ChessBoard.hpp"
 
-const int size = 200;
+const int size = 2000;
 int amount[size] = {0};
-
+double usedTime[size] = {0.0};
 
 int WinTime()
 {
@@ -30,31 +30,22 @@ int WinTime()
    return sum;
 }
 
-int PlayChess()
+int PlayChess(double &time)
 {
    int i = 1;
    ChessBoard C;
-   //20控制着计算机下棋的次数
-   //基本上在20步之内就能够获得胜利
+   
    cout << "The Initial state of Chessboard:" << endl;
    C.Display2();
    
+   //20控制着计算机下棋的次数
+   //基本上在20步之内就能够获得胜利
    for (; i <= 20 && !C.isFinished; i++)
    {
       cout << endl << i << "th step: " << endl;
       C.User();
-      
-       /*if (i == 4)
-       {
-          cout << endl;
-          C.Display2();
-          cout << endl;
-       }
-       */
-      C.WithoutAI();
-      //cout << "The mark of ChessBoard: " << C.EvaluateChessBoard() << endl;
+      time = C.WithoutAI();
       C.Display2();
-     // cout << endl;
    }
    return i;
 }
@@ -63,6 +54,9 @@ int PlayChess()
 void Simulation(int time)
 {
    double sum = 0.0;
+   double timePer = 0.0;
+   double timeSum = 0.0;
+   
    if (time >= size)
    {
       cout << "Please Input a number less than " << size << endl;
@@ -70,7 +64,10 @@ void Simulation(int time)
    }
    
    for (int i = 0; i < time; i++)
-      amount[i] = PlayChess();
+   {
+      amount[i] = PlayChess(timePer);
+      usedTime[i] = timePer;
+   }
    
    cout << "win/total: " << WinTime() <<"/" << time << endl;
    cout << "The step needed:" << endl;
@@ -78,17 +75,20 @@ void Simulation(int time)
    for (int i = 0; i < time; i++)
    {
       sum += amount[i];
+      timeSum += usedTime[i];
       cout << amount[i] << " ";
       if ((i + 1) % 5 == 0)
          cout << endl;
    }
    
-   cout << endl << "The average step is:" << sum / WinTime() << endl;
+   cout << endl << "Average step:" << sum / WinTime();
+   cout << endl << "Average time:" << timeSum / time << endl;
+   
 }
 
 int main(void)
 {
-   Simulation(1);
+   Simulation(2);
    return 0;
 }
 

@@ -904,24 +904,35 @@ void ChessBoard::ComputerDo(int &row, int &col)
 
 /*!
  *@brief   The whole process of WithAI to Play.
+ *
+ *@return   The time used to make a Decision.
  */
-void ChessBoard::WithAI()
+double ChessBoard::WithAI()
 {
    Node root;
+   auto startTime = std::chrono::high_resolution_clock::now();
    
    GetBestPosition(0, MINN, MAXN, root);
    
    Play(root._bestChild -> _point._x, root._bestChild -> _point._y, ATTACKER);
+   
+   auto endTime = std::chrono::high_resolution_clock::now();
+   return  std::chrono::duration<float, std::milli>(endTime - startTime).count();
 }
 
 /*!
  *@brief   The whole process of WithoutAI to Play.
+ *
+ *@return   The time used to make a Decision.
  */
-void ChessBoard::WithoutAI()
+double ChessBoard::WithoutAI()
 {
    int x, y;
+   auto startTime = std::chrono::high_resolution_clock::now();
    ComputerDo(x, y);
    Play(x, y, ATTACKER);
+   auto endTime = std::chrono::high_resolution_clock::now();
+   return  std::chrono::duration<float, std::milli>(endTime - startTime).count();
 }
 
 /*!
@@ -946,9 +957,10 @@ void ChessBoard::User()
    int x, y;
    do
    {
-      //x = _random.GenrandInt15();
-      //y = _random.GenrandInt15();
-      GetUserPosition(x,y);
+      x = _random.GenrandInt15();
+      y = _random.GenrandInt15();
+      //GetUserPosition(x,y);
+      
    }while (_chessBoard[x][y] != EMPTY);
    
    //cout << "User: " << x << " " << y << endl;
