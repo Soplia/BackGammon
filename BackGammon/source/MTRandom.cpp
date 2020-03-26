@@ -71,7 +71,7 @@ unsigned long MTRandom::GenrandInt32(void)
    return y;
 }
 
-/*!@brief  generates an integer number on [1,15] interval..
+/*!@brief  generates an integer number on [1,15] interval, use Gaussian Distribution.
  * @return The generated integer number.
  */
 int MTRandom::GenrandInt15(void)

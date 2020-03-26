@@ -14,7 +14,6 @@
  
  */
 
-
 #pragma once
 #include <iostream>
 using namespace std;
@@ -90,8 +89,4 @@ public:
     *@brief   Represent who played on this Position.
     */
    int _player;
-   
-   
 };
-
-

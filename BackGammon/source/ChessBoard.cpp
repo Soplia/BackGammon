@@ -57,10 +57,8 @@ bool ChessBoard::IsFull()
 void ChessBoard::Init(int x)
 {
    for (int i = 1; i<SIZE; i++)
-   {
       for (int j = 1; j<SIZE; j++)
          _chessBoard[i][j] = x;
-   }
    
    _toJudge.clear();
    _node.clear();
@@ -69,8 +67,6 @@ void ChessBoard::Init(int x)
    _bestNode.SetXY(0, 0);
    
    isFinished = false;
-   
-   
 }
 
 /*!
@@ -117,9 +113,7 @@ void ChessBoard::Display2()
 void ChessBoard::DisplayToJudge()
 {
    for (auto it : _toJudge)
-   {
       ((Position)it).Display();
-   }
 }
 
 /*!
@@ -286,7 +280,6 @@ bool ChessBoard::IsWin2(int x,int y)
 #endif
    
    //先保存这吧,可能会用到
-   
    // 判断一行是否五子连珠
    int cnt = 1;
    int col = y, row = x;
@@ -307,8 +300,7 @@ bool ChessBoard::IsWin2(int x,int y)
       //isFinished = true;
       return true;
    }
-   
-   
+
    // 判断一列是否五子连珠
    col = y;
    row = x;
@@ -330,7 +322,6 @@ bool ChessBoard::IsWin2(int x,int y)
       //isFinished = true;
       return true;
    }
-   
    
    // 判断左对角线是否五子连珠
    col = y;
@@ -354,7 +345,6 @@ bool ChessBoard::IsWin2(int x,int y)
       return true;
    }
    
-   
    // 判断右对角线是否五子连珠
    col = y;
    row = x;
@@ -376,7 +366,6 @@ bool ChessBoard::IsWin2(int x,int y)
       //isFinished = true;
       return true;
    }
-   
    return false;
 }
 
@@ -407,7 +396,6 @@ void ChessBoard::Play(int x, int y, int who)
    else
    {
       Position p(x, y);
-      
       //cout << "The contents of _toJudge: " << endl;
       //DisplayToJudge();
       //如果已经下了就从待判断队列中移除
@@ -456,7 +444,6 @@ int ChessBoard::EvaluateChessBoard()
                cnt++;
             if (col > 0 && _chessBoard[row][col] == EMPTY)
                flagL = true;
-            
             col = x;
             row = y;
             
@@ -746,13 +733,13 @@ int ChessBoard::CheckMax(int x, int y, int attacker_defender)
 {
    int num = 0, max_num, max_temp = 0;
    int x_temp = x, y_temp = y;
+   
    int x_temp1 = x_temp, y_temp1 = y_temp; // judge right
    for (int i = 1; i < 5; i++)
    {
       x_temp1 += 1;
       if (x_temp1 >= SIZE)
          break;
-      
       if (_chessBoard[x_temp1][y_temp1] == attacker_defender)
          num++;
       else
@@ -772,6 +759,7 @@ int ChessBoard::CheckMax(int x, int y, int attacker_defender)
    }
    if (num < 5)
       max_temp = num;
+   
    // judge up
    x_temp1 = x_temp;
    y_temp1 = y_temp;
@@ -799,8 +787,8 @@ int ChessBoard::CheckMax(int x, int y, int attacker_defender)
          break;
    }
    if (num > max_temp && num < 5)
-      
       max_temp = num;
+   
    // judge left_up
    x_temp1 = x_temp;
    y_temp1 = y_temp;
@@ -832,6 +820,7 @@ int ChessBoard::CheckMax(int x, int y, int attacker_defender)
    }
    if (num > max_temp && num < 5)
       max_temp = num;
+   
    // judge right_up
    x_temp1 = x_temp;
    y_temp1 = y_temp;
@@ -845,7 +834,6 @@ int ChessBoard::CheckMax(int x, int y, int attacker_defender)
       if (_chessBoard[x_temp1][y_temp1] == attacker_defender)
          num++;
       else
-         
          break;
    }
    // judge left_down
@@ -865,6 +853,7 @@ int ChessBoard::CheckMax(int x, int y, int attacker_defender)
    if (num > max_temp && num < 5)
       max_temp = num;
    max_num = max_temp;
+   
    return max_num;
 }
 

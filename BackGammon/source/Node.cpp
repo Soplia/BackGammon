@@ -7,7 +7,9 @@
  */
 
 #include "Node.hpp"
-
+/*!
+ *@brief   A constructor.
+ */
 Node::Node()
 {
    _bestChild = nullptr;
@@ -16,7 +18,11 @@ Node::Node()
    _mark = 0;
 }
 
-//不确定希望永远也不要用上
+/*!
+ *@brief   A copy constructor.
+ *
+ *@param    other    the parameter
+ */
 Node::Node(const Node &other)
 {
    _mark = other._mark;
@@ -29,7 +35,11 @@ Node::Node(const Node &other)
       _child -> push_back(other._child -> at(i));
 }
 
-//不确定希望永远也不要用上
+/*!
+ *@brief   Operator =
+ *
+ *@param    other    the parameter used to assignment
+ */
 Node & Node::operator = (const Node & other)
 {
    if (this == &other)
@@ -50,17 +60,32 @@ Node & Node::operator = (const Node & other)
    return *this;
 }
 
+/*!
+ *@brief   A setor
+ *
+ *@param    p    set p to the member of Node
+ */
 void Node::SetPoint(Position p)
 {
    _point._x = p._x;
    _point._y = p._y;
 }
 
+/*!
+ *@brief   Add the node into the verctor _child.
+ *
+ *@param    r    the node which is going to be added into _child.
+ */
 void Node::AddChild(Node *r)
 {
    _child -> push_back(r);
 }
 
+/*!
+ *@brief   Get the last child.
+ *
+ *@return   the last object in _child.
+ */
 Node * Node::GetLastChild()
 {
    //这个地方有问题那就进行尝试而已

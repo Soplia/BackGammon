@@ -213,7 +213,6 @@ public:
     */
    void ComputerDo(int &row, int &col);
 
-   
 public:
    /*!
     *@brief   Matrix contain the whole ChessBoard
@@ -252,5 +251,3 @@ public:
    
    MTRandom _random;
 };
-
-
